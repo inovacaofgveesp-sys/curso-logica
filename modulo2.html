@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 2 — Técnicas de Demonstração · FGV EESP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style> /* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: #FCFCFB;
+  color: #101A2C;
+  font-family: "Spectral", Georgia, serif;
+  font-size: 16px;
+  line-height: 1.75;
+}
+a { color: inherit; text-decoration: none; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #FCFCFB; }
+::-webkit-scrollbar-thumb { background: #E4E2DA; border-radius: 0; }
+
+/* ── LAYOUT ── */
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 272px;
+  flex-shrink: 0;
+  background: #17365E;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+.sb-head {
+  padding: 22px 18px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.badge {
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #E3B505;
+  background: rgba(227, 181, 5,.12);
+  border: 1px solid rgba(227, 181, 5,.3);
+  padding: 3px 9px;
+  border-radius: 0;
+  display: inline-block;
+  margin-bottom: 9px;
+}
+.sb-title {
+  font-family: "Lora", Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+.sb-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,.45);
+  margin-top: 3px;
+  font-family: "Lora", Georgia, serif;
+}
+.sb-nav { padding: 8px 0; flex: 1; }
+.nav-sec {
+  padding: 9px 18px 3px;
+  font-family: "Lora", Georgia, serif;
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-top: 4px;
+}
+.nav-a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  font-family: "Lora", Georgia, serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,.5);
+  transition: all .15s;
+}
+.nav-a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-a.active {
+  background: rgba(227, 181, 5,.12);
+  color: #E3B505;
+  border-left-color: #E3B505;
+}
+.nn {
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  min-width: 22px;
+  color: rgba(255,255,255,.28);
+}
+.nav-a.active .nn { color: #E3B505; }
+.ck {
+  margin-left: auto;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid rgba(255,255,255,.18);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: transparent;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.ck.done { background: #17365E; border-color: #17365E; color: #fff; }
+.prog-wrap {
+  padding: 12px 18px 16px;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+.prog-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  color: rgba(255,255,255,.38);
+  margin-bottom: 6px;
+}
+.prog-track { height: 3px; background: rgba(255,255,255,.1); border-radius: 0; overflow: hidden; }
+.prog-fill { height: 100%; background: #E3B505; border-radius: 0; transition: width .4s ease; }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  margin-left: 272px;
+  overflow-y: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── HERO ── */
+.hero {
+  background: #17365E;
+  padding: 52px 56px 44px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: -80px; right: -60px;
+  width: 340px; height: 340px;
+  background: radial-gradient(circle, rgba(227, 181, 5,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-ey {
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #E3B505;
+  margin-bottom: 13px;
+}
+.hero-h1 {
+  font-family: "Lora", Georgia, serif;
+  font-size: clamp(24px, 3.2vw, 38px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  max-width: 600px;
+  margin-bottom: 14px;
+}
+.hero-h1 em { color: #E3B505; font-style: normal; }
+.hero-p {
+  max-width: 540px;
+  color: rgba(255,255,255,.68);
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 26px;
+}
+.pills { display: flex; gap: 18px; flex-wrap: wrap; }
+.pill { display: flex; align-items: center; gap: 6px; font-family: "Lora", Georgia, serif; font-size: 12px; color: rgba(255,255,255,.55); }
+.pill-d { width: 7px; height: 7px; border-radius: 50%; }
+
+/* ── SECTIONS ── */
+.sec { display: none; padding: 0 56px 80px; max-width: 900px; }
+.sec.vis { display: block; animation: fu .25s ease; }
+@keyframes fu { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.sh { padding: 34px 0 22px; border-bottom: 1px solid #E4E2DA; margin-bottom: 28px; }
+.sl {
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #17365E;
+  margin-bottom: 5px;
+}
+.sh h2 { font-family: "Lora", Georgia, serif; font-size: 24px; font-weight: 700; line-height: 1.2; }
+.sh p { margin-top: 7px; color: #5C6270; font-size: 13px; font-style: italic; }
+
+/* ── VIDEO ── */
+.vw { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; overflow: hidden; margin-bottom: 8px; }
+.vph {
+  aspect-ratio: 16/9;
+  background: #17365E;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 13px; position: relative; cursor: pointer;
+}
+.pr {
+  width: 58px; height: 58px;
+  border: 2px solid rgba(227, 181, 5,.45);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .2s;
+}
+.vph:hover .pr { border-color: #E3B505; }
+.pt { width: 0; height: 0; border-style: solid; border-width: 9px 0 9px 16px; border-color: transparent transparent transparent #E3B505; margin-left: 3px; }
+.vph .pl { font-family: "Lora", Georgia, serif; font-size: 12px; color: rgba(255,255,255,.4); }
+.vph .pd { position: absolute; bottom: 13px; right: 13px; font-family: "Lora", Georgia, serif; font-size: 10px; color: rgba(255,255,255,.38); background: rgba(0,0,0,.3); padding: 2px 7px; border-radius: 0; }
+.vf { padding: 9px 15px; display: flex; align-items: center; gap: 10px; border-top: 1px solid #E4E2DA; }
+.vft { font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 600; flex: 1; }
+.vtg { font-family: "Lora", Georgia, serif; font-size: 9px; padding: 2px 7px; border-radius: 0; background: #F4F2EB; color: #17365E; border: 1px solid #E4E2DA; }
+
+/* ── DOWNLOAD BTN ── */
+.dlb {
+  display: inline-flex; align-items: center; gap: 7px; margin-bottom: 22px;
+  background: #fff; border: 1px solid #E4E2DA; border-radius: 0;
+  padding: 7px 15px; font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 600;
+  color: #17365E; cursor: pointer; transition: all .15s; text-decoration: none;
+}
+.dlb:hover { border-color: #17365E; background: #F4F2EB; }
+.dlb svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ── TABS ── */
+.tbr { display: flex; gap: 4px; background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 3px; width: fit-content; margin-bottom: 13px; }
+.tbb { font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 600; padding: 5px 15px; border: none; background: transparent; color: #5C6270; border-radius: 0; cursor: pointer; transition: all .15s; }
+.tbb.on { background: #17365E; color: #fff; }
+.tbp { display: none; background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 18px 22px; font-size: 14.5px; line-height: 1.85; color: #3A4152; }
+.tbp.on { display: block; animation: fu .2s ease; }
+.tbp p + p { margin-top: 11px; }
+.tbp strong { color: #17365E; }
+.tbp em { color: #17365E; font-style: normal; font-weight: 600; }
+
+/* ── CALLOUTS ── */
+.co { border-left: 3px solid #17365E; padding: 13px 17px; background: #F4F2EB; border-radius: 0; margin: 18px 0; font-size: 14px; color: #3A4152; }
+.co.y { border-left-color: #E3B505; background: #FBF4DB; }
+.co.r { border-left-color: #9C3B2E; background: #FAF2F0; }
+.co.g { border-left-color: #17365E; background: #EFF2F7; }
+.co-t { font-family: "Lora", Georgia, serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #17365E; margin-bottom: 5px; }
+.co.y .co-t { color: #8A6A00; }
+.co.r .co-t { color: #9C3B2E; }
+.co.g .co-t { color: #17365E; }
+
+/* ── LOGIC BOX ── */
+.lb { background: #F4F2EB; border: 1px solid #E4E2DA; border-radius: 0; padding: 13px 17px; margin: 13px 0; font-family: "Lora", Georgia, serif; font-size: 13px; color: #101A2C; overflow-x: auto; line-height: 1.9; }
+.lb .s { color: #17365E; font-weight: 500; }
+.lb .k { color: #17365E; font-weight: 600; }
+.lb .n { color: #5C6270; font-style: italic; font-family: "Spectral", Georgia, serif; font-size: 12px; }
+
+/* ── TRUTH TABLE ── */
+.ttw { overflow-x: auto; margin: 13px 0; }
+.tt { border-collapse: collapse; font-family: "Lora", Georgia, serif; font-size: 13px; }
+.tt th { background: #17365E; color: #E3B505; padding: 7px 14px; text-align: center; border: 1px solid #2A4A78; font-size: 11px; font-weight: 600; letter-spacing: .04em; }
+.tt td { padding: 6px 14px; text-align: center; border: 1px solid #E4E2DA; background: #fff; }
+.tt tr:nth-child(even) td { background: #FCFCFB; }
+.tt td.T { color: #17365E; font-weight: 600; }
+.tt td.F { color: #9C3B2E; font-weight: 600; }
+.tt td.H { background: #F4F2EB; font-weight: 700; color: #17365E; }
+
+/* ── BIBLIO ── */
+.bib { background: #F4F2EB; border: 1px solid #E4E2DA; border-radius: 0; padding: 13px 17px; margin: 18px 0; }
+.bib-t { font-family: "Lora", Georgia, serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #17365E; margin-bottom: 5px; }
+.bib-b { font-size: 13px; color: #5C6270; line-height: 1.7; font-family: "Lora", Georgia, serif; }
+.bib-b strong { color: #17365E; font-weight: 600; }
+
+/* ── QUICK CHECKS ── */
+.qw { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 18px 20px; margin: 24px 0; }
+.qt { font-family: "Lora", Georgia, serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #5C6270; margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
+.qt::before { content: ""; display: block; width: 18px; height: 2px; background: #E3B505; border-radius: 0; }
+.qi { display: flex; gap: 9px; padding: 9px 13px; border: 1px solid #E4E2DA; border-radius: 0; cursor: pointer; transition: all .15s; font-size: 13.5px; align-items: flex-start; margin-bottom: 8px; }
+.qi:last-of-type { margin-bottom: 0; }
+.qi:hover { border-color: #17365E; background: #F4F2EB; }
+.qi.ok { border-color: #17365E; background: #EFF2F7; pointer-events: none; }
+.qi.no { border-color: #9C3B2E; background: #FAF2F0; pointer-events: none; }
+.qi.done { pointer-events: none; opacity: .82; }
+.ql { font-family: "Lora", Georgia, serif; font-size: 11px; color: #5C6270; min-width: 17px; margin-top: 1px; flex-shrink: 0; }
+.qfb { font-size: 12.5px; padding: 8px 12px; border-radius: 0; margin-top: 8px; display: none; font-family: "Lora", Georgia, serif; }
+.qfb.show { display: block; animation: fu .2s ease; }
+.qfb.ok { background: #EFF2F7; color: #17365E; border: 1px solid #C3CEDE; }
+.qfb.no { background: #FAF2F0; color: #9C3B2E; border: 1px solid #E6C4BE; }
+
+/* ── COMPLETE BTN ── */
+.cb { display: flex; align-items: center; gap: 8px; margin-top: 34px; background: transparent; border: 1.5px solid #E4E2DA; border-radius: 0; padding: 10px 20px; font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 600; color: #5C6270; cursor: pointer; transition: all .2s; }
+.cb:hover { border-color: #17365E; color: #17365E; }
+.cb.done { border-color: #17365E; color: #17365E; background: #EFF2F7; }
+
+/* ── EXERCISES ── */
+.sc-bar { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 14px 20px; margin-bottom: 22px; display: flex; align-items: center; gap: 18px; }
+.sc-ring { width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#17365E 0%, #E4E2DA 0%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .4s; }
+.sc-in { width: 46px; height: 46px; border-radius: 50%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.sc-pct { font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 700; color: #17365E; line-height: 1; }
+.sc-l { font-family: "Lora", Georgia, serif; font-size: 9px; color: #5C6270; }
+.sc-txt { flex: 1; }
+.sc-h { font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 700; color: #17365E; }
+.sc-d { font-size: 12px; color: #5C6270; font-family: "Lora", Georgia, serif; margin-top: 2px; }
+
+.ec { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; margin-bottom: 13px; overflow: hidden; }
+.eh { display: flex; align-items: flex-start; gap: 11px; padding: 13px 17px; cursor: pointer; transition: background .15s; }
+.eh:hover { background: #FCFCFB; }
+.en { font-family: "Lora", Georgia, serif; font-size: 10px; color: #17365E; background: #F4F2EB; border: 1px solid #E4E2DA; padding: 2px 7px; border-radius: 0; flex-shrink: 0; margin-top: 1px; }
+.et { font-family: "Lora", Georgia, serif; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: #5C6270; background: #FCFCFB; border: 1px solid #E4E2DA; padding: 2px 6px; border-radius: 0; flex-shrink: 0; margin-top: 2px; }
+.eq { font-size: 14px; flex: 1; line-height: 1.6; }
+.ea { color: #5C6270; transition: transform .2s; font-size: 11px; margin-top: 3px; flex-shrink: 0; }
+.ec.op .ea { transform: rotate(180deg); }
+.eb { display: none; padding: 0 17px 14px; border-top: 1px solid #E4E2DA; }
+.ec.op .eb { display: block; animation: fu .2s ease; }
+
+.mo { display: flex; flex-direction: column; gap: 7px; margin: 13px 0 5px; }
+.mi { display: flex; align-items: flex-start; gap: 9px; padding: 8px 12px; border: 1px solid #E4E2DA; border-radius: 0; cursor: pointer; transition: all .15s; font-size: 13.5px; }
+.mi:hover { border-color: #17365E; background: #F4F2EB; }
+.mi.ok { border-color: #17365E; background: #EFF2F7; pointer-events: none; }
+.mi.no { border-color: #9C3B2E; background: #FAF2F0; pointer-events: none; }
+.mi.done { pointer-events: none; }
+.ml { font-family: "Lora", Georgia, serif; font-size: 11px; color: #5C6270; min-width: 17px; flex-shrink: 0; margin-top: 1px; }
+.mf { font-size: 12.5px; padding: 8px 11px; border-radius: 0; display: none; font-family: "Lora", Georgia, serif; margin-top: 4px; }
+.mf.show.ok { display: block; background: #EFF2F7; color: #17365E; border: 1px solid #C3CEDE; animation: fu .2s ease; }
+.mf.show.no { display: block; background: #FAF2F0; color: #9C3B2E; border: 1px solid #E6C4BE; animation: fu .2s ease; }
+
+.vo { display: flex; gap: 9px; margin: 13px 0 5px; }
+.vi { flex: 1; padding: 9px; border: 1px solid #E4E2DA; border-radius: 0; cursor: pointer; text-align: center; font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 600; transition: all .15s; }
+.vi:hover { border-color: #17365E; background: #F4F2EB; }
+.vi.ok { border-color: #17365E; background: #EFF2F7; pointer-events: none; }
+.vi.no { border-color: #9C3B2E; background: #FAF2F0; pointer-events: none; }
+
+.txw { margin: 13px 0 5px; }
+.txi { width: 100%; background: #FCFCFB; border: 1px solid #E4E2DA; border-radius: 0; padding: 8px 13px; font-family: "Lora", Georgia, serif; font-size: 13px; color: #101A2C; transition: border-color .15s; outline: none; }
+.txi:focus { border-color: #17365E; }
+.txi.ok { border-color: #17365E; background: #EFF2F7; }
+.txi.no { border-color: #9C3B2E; background: #FAF2F0; }
+
+.br { display: flex; gap: 7px; margin-top: 9px; flex-wrap: wrap; }
+.ckb { background: #17365E; color: #fff; border: none; padding: 7px 16px; border-radius: 0; font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity .15s; }
+.ckb:hover { opacity: .87; }
+.hb { background: transparent; border: 1px solid #E4E2DA; color: #5C6270; padding: 7px 13px; border-radius: 0; font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s; }
+.hb:hover { border-color: #17365E; color: #17365E; }
+.hx { background: #FBF4DB; border: 1px solid #E3B505; border-radius: 0; padding: 8px 11px; font-size: 12.5px; color: #8A6A00; font-family: "Lora", Georgia, serif; margin-top: 7px; display: none; }
+.hx.show { display: block; animation: fu .2s ease; }
+
+.tts { background: #FCFCFB; border: 1px solid #E4E2DA; color: #101A2C; padding: 3px 7px; border-radius: 0; font-family: "Lora", Georgia, serif; font-size: 12px; cursor: pointer; outline: none; transition: border-color .15s; }
+.tts:focus { border-color: #17365E; }
+.tts.ok { border-color: #17365E; color: #17365E; }
+.tts.no { border-color: #9C3B2E; color: #9C3B2E; }
+.ttf { font-size: 13px; display: none; margin-top: 7px; padding: 8px 12px; border-radius: 0; font-family: "Lora", Georgia, serif; }
+.ttf.show.ok { display: block; background: #EFF2F7; color: #17365E; border: 1px solid #C3CEDE; animation: fu .2s ease; }
+.ttf.show.no { display: block; background: #FAF2F0; color: #9C3B2E; border: 1px solid #E6C4BE; animation: fu .2s ease; }
+
+/* ── DOUBT BTN ── */
+.db { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; background: #fff; border: 1.5px solid #E4E2DA; border-radius: 0; padding: 8px 17px; font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 600; color: #17365E; cursor: pointer; transition: all .15s; }
+.db:hover { border-color: #17365E; background: #F4F2EB; }
+
+/* ── MODAL ── */
+.ov { position: fixed; inset: 0; background: rgba(20,35,70,.55); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+.ov.open { display: flex; }
+.md { background: #fff; border-radius: 0; padding: 26px 26px 20px; max-width: 620px; width: 100%; box-shadow: none; }
+.mdh { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.mdt { font-family: "Lora", Georgia, serif; font-size: 15px; font-weight: 700; color: #17365E; }
+.mdc { background: none; border: none; font-size: 20px; color: #5C6270; cursor: pointer; }
+.mdb { font-size: 13px; color: #5C6270; margin-bottom: 12px; line-height: 1.7; font-family: "Lora", Georgia, serif; }
+.mdp { background: #FCFCFB; border: 1px solid #E4E2DA; border-radius: 0; padding: 14px; font-family: "Lora", Georgia, serif; font-size: 12px; line-height: 1.7; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-bottom: 13px; }
+.cpb { background: #17365E; color: #fff; border: none; padding: 8px 20px; border-radius: 0; font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity .15s; }
+.cpb:hover { opacity: .87; }
+.cpb.copied { background: #17365E; }
+
+/* ── OVERVIEW GRID ── */
+.og { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px; margin: 20px 0; }
+.oc { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 18px 20px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden; }
+.oc::before { content: ""; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: #17365E; opacity: 0; transition: opacity .2s; }
+.oc:hover { border-color: #17365E; transform: translateY(-1px); box-shadow: none; }
+.oc:hover::before { opacity: 1; }
+.on { font-family: "Lora", Georgia, serif; font-size: 10px; color: #5C6270; margin-bottom: 5px; }
+.oh { font-family: "Lora", Georgia, serif; font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #17365E; }
+.od { font-size: 12.5px; color: #5C6270; line-height: 1.6; font-family: "Lora", Georgia, serif; }
+.ob { font-family: "Lora", Georgia, serif; font-size: 10px; color: #5C6270; margin-top: 8px; }
+
+/* ── CREDITS ── */
+.crd { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 22px 24px; margin-bottom: 18px; }
+.crd p { font-size: 14.5px; line-height: 1.85; color: #3A4152; margin-bottom: 11px; }
+.crd p:last-child { margin-bottom: 0; }
+
+/* ── MOBILE ── */
+.mob { display: none; position: fixed; bottom: 20px; right: 20px; width: 44px; height: 44px; background: #17365E; color: #fff; border: none; border-radius: 50%; font-size: 18px; cursor: pointer; z-index: 100; box-shadow: none; align-items: center; justify-content: center; }
+
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); transition: transform .25s ease; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .mob { display: flex; }
+  .hero { padding: 34px 20px 28px; }
+  .sec { padding: 0 20px 60px; }
+  .og { grid-template-columns: 1fr; }
+}
+
+
+/* ══════════ Direção A · Compêndio ══════════ */
+
+/* variáveis usadas na marcação mas nunca declaradas no arquivo original */
+:root {
+  --yellow: #E3B505; --blue: #17365E; --success: #17365E;
+  --muted: #5C6270; --border: #E4E2DA; --fh: "Lora", Georgia, serif;
+}
+
+/* ── tipografia: exatamente a dos slides ── */
+body, p, li, td, th, input, button, textarea { font-family: "Spectral", Georgia, serif; }
+h1, h2, h3, h4, .hero-h1, .sb-title, .mdh { font-family: "Lora", Georgia, serif; font-weight: 600; letter-spacing: -0.005em; }
+.nav-a, .sb-sub { font-family: "Spectral", Georgia, serif; }
+.badge, .nav-sec, .hero-ey, .pill, .eh, .bib-t, .mdt, .sc-l, .sl, .qt, .co-t,
+.et, .vtg, .ql, .en, .ml, .on, .ob, .prog-meta, .dlb, .tbb, .tts, .vf, .vft, .pd
+  { font-family: "Lora", Georgia, serif; }
+.lb, .mdp, .txi { font-family: "JetBrains Mono", Consolas, monospace !important; }
+
+/* ── nada de sombra ── */
+* { box-shadow: none !important; }
+
+/* ── mais ar: o Compêndio respira ── */
+.sec { padding: 0 56px 96px; max-width: 880px; }
+.sh { padding: 44px 0 20px; border-bottom: 1px solid #E4E2DA; margin-bottom: 34px; }
+.sl { color: #8A6A00; letter-spacing: 0.18em; }
+
+/* ── cartões deixam de ser caixas: fio em cima, sem moldura ── */
+.crd { background: transparent !important; border: none !important;
+       border-top: 1px solid #E4E2DA !important; padding: 22px 0 10px; margin-bottom: 6px; }
+
+/* ── destaques: painel plano, sem barra lateral ── */
+.co { border: none !important; border-left: none !important;
+      background: #F4F2EB; padding: 18px 22px; margin: 22px 0; }
+.co.y { background: #FBF4DB; }
+.co.r { background: #FAF2F0; }
+.co.g { background: #EFF2F7; }
+.co-t { color: #8A6A00; letter-spacing: 0.16em; font-size: 10.5px; }
+.bib { background: transparent !important; border: none !important; border-top: 1px solid #E4E2DA !important; padding: 14px 0 4px; }
+.bib-t { color: #8A6A00; letter-spacing: 0.16em; }
+
+/* ── verificações rápidas: linhas com fio, não caixa dentro de caixa ── */
+.qw { background: transparent !important; border: none !important;
+      border-top: 1px solid #E4E2DA !important; padding: 22px 0 4px; margin: 32px 0 0; }
+.qt { color: #8A6A00; letter-spacing: 0.16em; }
+.qi { border: none !important; border-bottom: 1px solid #EFEDE6;
+      padding: 13px 4px; margin-bottom: 0; font-size: 15px; }
+.qi:last-child { border-bottom: none; }
+.qi:hover { background: #F7F5EF; }
+.ql { color: #8A6A00; font-size: 10.5px; letter-spacing: 0.1em; }
+
+/* ── exercícios: mesma lógica ── */
+.ec { background: transparent !important; border: none !important;
+      border-top: 1px solid #E4E2DA !important; margin-bottom: 0; }
+.eh { padding: 17px 2px; }
+.eb { border-top: none; padding: 0 2px 22px; }
+
+/* ── botão de download: fio ocre, sem preenchimento ── */
+.dlb { background: transparent !important; border: 1px solid #E3B505 !important;
+       color: #17365E; padding: 9px 16px; }
+.dlb:hover { background: #FBF4DB !important; }
+
+/* ── alternadores ── */
+.tbr { background: transparent !important; border: 1px solid #E4E2DA !important; }
+.tbp { font-size: 15.5px !important; line-height: 1.72 !important; color: #3A4152;
+       border: none !important; background: #F4F2EB; padding: 18px 22px; }
+
+/* ── tabelas verdade: sem grade, sem preenchimento ── */
+.tt { border-collapse: collapse; width: auto; }
+.tt th { background: transparent !important; color: #17365E !important; border: none !important;
+         border-bottom: 2px solid #17365E !important; font-family: "Lora", Georgia, serif;
+         font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+         padding: 4px 18px 9px; text-align: center; }
+.tt td { background: transparent !important; border: none !important;
+         border-bottom: 1px solid #E4E2DA !important; font-family: "Spectral", Georgia, serif;
+         font-size: 16px; padding: 9px 18px; text-align: center; }
+.tt td.T { color: #17365E !important; }
+.tt td.F { color: #8A6A00 !important; }
+.tt td.H, .tt th.H { background: #FBF4DB !important; font-weight: 600; }
+.tt tr:last-child td { border-bottom: none !important; }
+
+/* ── notação alinhada continua monoespaçada ── */
+.lb { font-size: 13.5px; line-height: 1.8; background: #F4F2EB; border: none !important; padding: 18px 22px; }
+.mdp { background: #F4F2EB; border: none !important; }
+
+.prog-fill { background: #E3B505; }
+a { text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+/* ══ Glossário ══ */
+.gl-sub { font-size: 15px; color: #5C6270; font-style: italic; margin-bottom: 18px; }
+.gl-intro { font-size: 15.5px; line-height: 1.7; color: #3A4152; background: #F4F2EB; padding: 16px 20px; margin-bottom: 34px; }
+.gl-grp { margin-bottom: 38px; }
+.gl-t { font-family: "Lora", Georgia, serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+        text-transform: uppercase; color: #8A6A00; margin-bottom: 10px; }
+table.gl { width: 100%; border-collapse: collapse; }
+table.gl th { font-family: "Lora", Georgia, serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+              text-transform: uppercase; color: #17365E; text-align: left;
+              border-bottom: 2px solid #17365E; background: transparent; padding: 0 12px 8px; }
+table.gl th.gl-hs { text-align: center; width: 96px; }
+table.gl th.gl-ha { text-align: right; width: 86px; }
+table.gl th:nth-child(2) { width: 178px; }
+table.gl th:nth-child(3) { width: 172px; }
+table.gl td { border-bottom: 1px solid #E4E2DA; background: transparent; padding: 13px 12px; vertical-align: top; }
+table.gl tr:last-child td { border-bottom: none; }
+.gl-s { font-family: "Spectral", Georgia, serif; font-size: 21px; color: #17365E; text-align: center; white-space: nowrap; }
+.gl-n { font-size: 14.5px; color: #101A2C; font-weight: 600; white-space: nowrap; }
+.gl-l { font-size: 14px; color: #5C6270; font-style: italic; }
+.gl-d { font-size: 14.5px; line-height: 1.6; color: #3A4152; }
+.gl-a { text-align: right; white-space: nowrap; }
+.gl-tag { font-family: "Lora", Georgia, serif; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+          color: #8A6A00; border: 1px solid #E8DCA8; background: #FBF4DB; padding: 3px 7px; }
+@media (max-width: 900px) {
+  table.gl, table.gl tbody, table.gl tr, table.gl td { display: block; width: 100%; }
+  table.gl thead { display: none; }
+  table.gl tr { border-bottom: 1px solid #E4E2DA; padding: 12px 0; }
+  table.gl td { border: none; padding: 2px 0; }
+  .gl-s { text-align: left; font-size: 24px; }
+  .gl-a { text-align: left; margin-top: 6px; }
+}
+
+/* ── vídeo publicado ── */
+.vemb { aspect-ratio: 16/9; background: #17365E; }
+.vemb iframe { width: 100%; height: 100%; border: 0; display: block; }
+.vw { background: transparent !important; border: none !important; }
+.vf { border-top: 1px solid #E4E2DA; padding: 10px 2px; }
+</style> <!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar"> <div class="sb-head"> <div class="badge">Módulo 2</div> <div class="sb-title">Técnicas de Demonstração</div> <div class="sb-sub">FGV EESP · Matemática I/II</div> </div> <nav class="sb-nav"> <div class="nav-sec">Créditos</div> <a class="nav-a" onclick="show('disc')" href="#"><span class="nn"></span>Sobre este Material<span class="ck done" id="ck-disc">✓</span></a> <div class="nav-sec">Apresentação</div> <a class="nav-a active" onclick="show('ov')" href="#"><span class="nn">00</span>Visão Geral<span class="ck done" id="ck-ov">✓</span></a> <div class="nav-sec">Técnicas de Prova</div> <a class="nav-a" onclick="show('a1')" href="#"><span class="nn">01</span>O que é uma Prova?<span class="ck" id="ck-a1"></span></a> <a class="nav-a" onclick="show('a2')" href="#"><span class="nn">02</span>Prova Direta<span class="ck" id="ck-a2"></span></a> <a class="nav-a" onclick="show('a3')" href="#"><span class="nn">03</span>Prova por Contraposição<span class="ck" id="ck-a3"></span></a> <a class="nav-a" onclick="show('a4')" href="#"><span class="nn">04</span>Prova por Contradição<span class="ck" id="ck-a4"></span></a> <a class="nav-a" onclick="show('a5')" href="#"><span class="nn">05</span>Prova por Indução<span class="ck" id="ck-a5"></span></a> <div class="nav-sec">Prática</div> <a class="nav-a" onclick="show('ex')" href="#"><span class="nn">EX</span>Exercícios<span class="ck" id="ck-ex"></span></a><a class="nav-a" onclick="show('gl')" href="#"><span class="nn">GL</span>Glossário</a> </nav> <div class="prog-wrap"> <div class="prog-meta"><span>Progresso</span><span id="pp">14%</span></div> <div class="prog-track"><div class="prog-fill" id="pf" style="width:14%"></div></div> </div>
+</aside> <!-- MAIN -->
+<main class="main" id="main"> <!-- HERO -->
+<header class="hero"> <div class="hero-ey">FGV EESP · Matemática I/II · Módulo de Apoio</div> <h1 class="hero-h1">Técnicas de <em>Demonstração</em></h1> <p class="hero-p">Da prova direta à indução matemática — como construir argumentos rigorosos em matemática.</p> <div class="pills"> <div class="pill"><div class="pill-d" style="background:#E3B505"></div>5 aulas · ~48 min</div> <div class="pill"><div class="pill-d" style="background:#E3B505"></div>Exercícios interativos</div> <div class="pill"><div class="pill-d" style="background:#C3CEDE"></div>Slides para download</div> </div>
+</header> <!-- ═══ DISCLAIMER ═══ -->
+<section class="sec" id="sec-disc"> <div class="sh"><div class="sl">Sobre este Material</div><h2>Créditos e Disclaimer</h2></div> <div class="crd"> <p><strong>Este material foi integralmente construído com o uso de Inteligência Artificial</strong> — em especial as ferramentas <strong>Claude AI</strong> (Anthropic) e <strong>HeyGen</strong> — e passou por supervisão e validação de professores da <strong>FGV EESP</strong>. Os conteúdos, exemplos e exercícios refletem insumos pedagógicos fornecidos pelos docentes listados abaixo.</p> <p><strong>Organização pedagógica:</strong> Prof. Raone Costa.<br> <strong>Execução:</strong> Profa. Gabriela Fonseca e Prof. Caio Castro.<br> <strong>Colaborações:</strong> Profa. Katia Nishiyama, Prof. Roberto Sarkisian, Prof. Pedro Ogeda e Profa. Verônica Orellano.</p> <p><strong>Base bibliográfica:</strong><br> • <em>forallx: An Introduction to Formal Logic</em>, P.D. Magnus — disponível gratuitamente em <a href="https://www.fecundity.com/codex/forallx.pdf" target="_blank" style="color:#17365E">fecundity.com/codex/forallx.pdf</a><br> • <em>Book of Proof</em> (3ª ed.), Richard Hammack — disponível gratuitamente em <a href="https://www.people.vcu.edu/~rhammack/BookOfProof/BookOfProof.pdf" target="_blank" style="color:#17365E">people.vcu.edu/~rhammack/BookOfProof</a><br> • Slides de aula do Prof. Ricardo Masini (FGV EESP)</p> <p><strong>Sua opinião importa.</strong> Se você encontrar erros, imprecisões ou tiver sugestões de melhoria, por favor envie seu feedback diretamente aos tutores ou professores responsáveis pela disciplina. Este é um material em construção e sua contribuição é muito bem-vinda.</p> </div>
+</section> <!-- ═══ VISÃO GERAL ═══ -->
+<section class="sec vis" id="sec-ov"> <div class="sh"><div class="sl">Introdução · 00</div><h2>O que você vai aprender</h2><p>Por que demonstrações importam — e como dominá-las</p></div> <div class="co y" style="margin-bottom:18px"> <div class="co-t"> Bibliografia Base</div> O material se baseia no livro <strong>Book of Proof</strong> (Richard Hammack), de acesso livre, e na <br> <a class="dlb" href="https://www.people.vcu.edu/~rhammack/BookOfProof/BookOfProof.pdf" target="_blank"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Baixar Book of Proof (Hammack) — PDF gratuito
+    </a> </div> <div class="tbr" data-group="ov"><button class="tbb on" data-tab="ovr">Rápido</button><button class="tbb" data-tab="ovc">Completo</button></div> <div class="tbp on" id="ovr"> <p>Todo teorema de matemática tem a forma <strong>P → Q</strong>. Provar um teorema significa mostrar, com rigor, que sempre que P vale, Q também vale. Este módulo ensina as quatro principais estratégias para fazer isso.</p> <p>Ao final, você conseguirá ler — e escrever — demonstrações dos tipos encontrados em Álgebra Linear e Matemática II.</p> </div> <div class="tbp" id="ovc"> <p>Matemática não é apenas calcular: é argumentar com precisão. Cada afirmação precisa de justificativa, e cada justificativa precisa partir de verdades já estabelecidas — até chegarmos aos <em>axiomas</em>, as verdades primitivas do sistema.</p> <p>As quatro técnicas deste módulo cobrem praticamente todos os casos: <strong>prova direta</strong> (deduz Q a partir de P), <strong>contraposição</strong> (prova ¬P a partir de ¬Q), <strong>contradição</strong> (assume ¬Q e chega num absurdo) e <strong>indução</strong> (prova para todos os naturais de uma vez).</p> <p>O módulo conecta diretamente ao Módulo 1: a contraposição é a equivalência lógica P→Q ≡ ¬Q→¬P que você já conhece. A contradição parte da tabela verdade de P→Q. A indução usa quantificadores ∀ e →.</p> </div> <div class="og"> <div class="oc" onclick="show('a1')"><div class="on">Aula 01</div><div class="oh">O que é uma Prova?</div><div class="od">Axiomas, modus ponens e a estrutura geral de qualquer demonstração matemática.</div><div class="ob"> ~8 min</div></div> <div class="oc" onclick="show('a2')"><div class="on">Aulas 02–03</div><div class="oh">Direta e Contraposição</div><div class="od">As duas técnicas mais diretas — assumir P e deduzir Q, ou assumir ¬Q e deduzir ¬P.</div><div class="ob"> ~16 min</div></div> <div class="oc" onclick="show('a4')"><div class="on">Aula 04</div><div class="oh">Contradição</div><div class="od">Assumir o absurdo e chegar numa contradição. Quando usar — e quando não usar.</div><div class="ob"> ~12 min</div></div> <div class="oc" onclick="show('a5')"><div class="on">Aula 05</div><div class="oh">Indução</div><div class="od">Caso base + passo indutivo. A técnica para provar afirmações sobre todos os naturais.</div><div class="ob"> ~12 min</div></div> </div> <button class="cb done" onclick="markDone('ov',this)">✓ Marcar como lido</button>
+</section> <!-- ═══ AULA 1 ═══ -->
+<section class="sec" id="sec-a1"> <div class="sh"><div class="sl">Aula 01</div><h2>O que é uma Prova Matemática?</h2><p>Axiomas, modus ponens e a estrutura de qualquer demonstração</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 01 — em breve</div><div class="pd">~8 min</div></div><div class="vf"><span class="vft">Motivação e estrutura de provas matemáticas</span><span class="vtg">AULA 01</span></div></div> <a class="dlb" href="slides/Modulo2_Aula01_O-que-e-uma-Prova_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a1"><button class="tbb on" data-tab="a1c">Conceitual</button><button class="tbb" data-tab="a1f">Formal</button></div> <div class="tbp on" id="a1c"> <p>Provar algo em matemática significa construir uma cadeia de raciocínio que parte de verdades já estabelecidas e chega à afirmação que queremos mostrar. Não basta "verificar casos" nem "parecer óbvio" — a prova precisa ser válida para <em>todos</em> os casos cobertos pelo enunciado.</p> <p>Toda essa cadeia precisa ter um começo. Esse começo são os <em>axiomas</em>: verdades primitivas que são aceitas sem prova, como os axiomas de Peano para os naturais ou os axiomas da teoria dos conjuntos. A partir deles, toda a matemática é construída.</p> <p>A ferramenta central é o <em>modus ponens</em>: se P → Q é verdadeiro e P é verdadeiro, então Q é verdadeiro. É isso que permite encadear implicações.</p> </div> <div class="tbp" id="a1f"> <p><strong>Modus Ponens (MP):</strong></p> <div class="lb"><span class="s">((P → Q) ∧ P)</span> <span class="k">→</span> <span class="s">Q</span></div> <p>Uma prova direta é uma cadeia de MP:</p> <div class="lb">P <span class="n">— hipótese</span><br>P → P₁ <span class="n">— implicação válida</span><br>P₁ → P₂ <span class="n">— implicação válida</span><br>⋮<br>Pₙ → Q <span class="n">— implicação válida</span><br><span class="k">∴ Q</span> <span class="n">— por modus ponens repetido</span></div> <div class="co"><div class="co-t">Tipos de prova</div>Prova direta · Contraposição · Contradição · Indução — todas são formas de construir essa cadeia. A diferença está em <em>por onde começar</em> e <em>o que assumir</em>.</div> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>Book of Proof (Hammack):</strong> Cap. 4, introdução (pp. 84–86) — O que é uma prova direta.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div> <div class="qi" onclick="qc(this,false,'q1a')"><span class="ql">A</span>Provar um teorema significa verificar que ele vale para muitos casos específicos.</div> <div class="qi" onclick="qc(this,true,'q1a')"><span class="ql">B</span>Provar um teorema significa construir uma cadeia lógica que garanta sua validade em todos os casos cobertos pelo enunciado.</div> <div class="qi" onclick="qc(this,false,'q1a')"><span class="ql">C</span>Provar um teorema significa encontrar um exemplo que o ilustre bem.</div> <div class="qfb" id="q1a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2: o que são axiomas?</div> <div class="qi" onclick="qc(this,false,'q1b')"><span class="ql">A</span>Axiomas são teoremas muito importantes que precisam de prova longa.</div> <div class="qi" onclick="qc(this,true,'q1b')"><span class="ql">B</span>Axiomas são verdades primitivas aceitas sem prova, das quais todo o resto é deduzido.</div> <div class="qi" onclick="qc(this,false,'q1b')"><span class="ql">C</span>Axiomas são definições de termos matemáticos.</div> <div class="qfb" id="q1b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3: modus ponens diz que:</div> <div class="qi" onclick="qc(this,false,'q1c')"><span class="ql">A</span>Se P → Q e Q são verdadeiros, então P é verdadeiro.</div> <div class="qi" onclick="qc(this,true,'q1c')"><span class="ql">B</span>Se P → Q e P são verdadeiros, então Q é verdadeiro.</div> <div class="qi" onclick="qc(this,false,'q1c')"><span class="ql">C</span>Se P → Q é verdadeiro, então P e Q são ambos verdadeiros.</div> <div class="qfb" id="q1c"></div></div> <button class="db" onclick="openDoubt('a1')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a1',this)">✓ Marcar Aula 01 como concluída</button>
+</section> <!-- ═══ AULA 2 ═══ -->
+<section class="sec" id="sec-a2"> <div class="sh"><div class="sl">Aula 02</div><h2>Prova Direta</h2><p>Assumir P e deduzir Q passo a passo</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 02 — em breve</div><div class="pd">~8 min</div></div><div class="vf"><span class="vft">Prova Direta — estrutura e exemplos</span><span class="vtg">AULA 02</span></div></div> <a class="dlb" href="slides/Modulo2_Aula02_Prova-Direta_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a2"><button class="tbb on" data-tab="a2c">Conceitual</button><button class="tbb" data-tab="a2f">Formal</button></div> <div class="tbp on" id="a2c"> <p>A prova direta é a técnica mais intuitiva: <strong>assume-se que P é verdadeiro</strong> e, por uma sequência de deduções lógicas, mostra-se que <strong>Q também deve ser verdadeiro</strong>.</p> <p>Por que isso basta? Porque pela tabela verdade de P → Q, o único caso em que a implicação é falsa é quando P é verdadeiro e Q é falso. Se garantirmos que P verdadeiro implica Q verdadeiro, a implicação é sempre verdadeira.</p> <p>Exemplo econômico: para provar "se um mercado é perfeitamente competitivo (P), então o lucro econômico de longo prazo é zero (Q)", assume-se P e deduz-se Q via entrada de firmas e competição de preços.</p> </div> <div class="tbp" id="a2f"> <p><strong>Estrutura da prova direta:</strong></p> <div class="lb"><span class="k">Teorema:</span> P → Q<br><span class="k">Prova:</span> Assuma P.<br><span class="n"> [deduções intermediárias P → P₁ → P₂ → … → Q]</span><br>Portanto Q. <span class="k">∎</span></div> <p style="margin-top:14px"><strong>Exemplo — Desigualdade AM-GM:</strong></p> <div class="lb"><span class="k">Teorema:</span> Para x, y ∈ ℝ positivos, √(xy) ≤ (x+y)/2<br><span class="k">Prova:</span> Assuma x > 0 e y > 0. Então:<br>0 ≤ (√x − √y)² = x + y − 2√(xy)<br>∴ 2√(xy) ≤ x + y<br>∴ √(xy) ≤ (x+y)/2 <span class="k">∎</span></div> <p style="margin-top:14px"><strong>Exemplo — Múltiplos de 4:</strong></p> <div class="lb"><span class="k">Teorema:</span> Todo múltiplo de 4 pode ser escrito como 1 + (−1)ⁿ(2n−1) para algum n ∈ ℕ<br><span class="k">Prova:</span> Seja k = 4a para algum a ∈ ℤ. Analisamos 3 casos:<br>• a = 0: tome n = 1. Então 1 + (−1)¹(2·1−1) = 0 = k ✓<br>• a > 0: tome n = 2a (par). Então 1 + (2n−1) = 2n = 4a = k ✓<br>• a &lt; 0: tome n = 1−2a (ímpar). Então 1 − (2n−1) = 4a = k ✓ <span class="k">∎</span></div> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>Book of Proof (Hammack):</strong> Cap. 4 (pp. 84–100) — Prova direta.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div> <div class="qi" onclick="qc(this,true,'q2a')"><span class="ql">A</span>Na prova direta, assume-se P verdadeiro e deduz-se que Q também é verdadeiro.</div> <div class="qi" onclick="qc(this,false,'q2a')"><span class="ql">B</span>Na prova direta, assume-se Q falso e deduz-se que P também é falso.</div> <div class="qi" onclick="qc(this,false,'q2a')"><span class="ql">C</span>Na prova direta, verifica-se P → Q para vários valores específicos.</div> <div class="qfb" id="q2a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2</div> <div class="qi" onclick="qc(this,false,'q2b')"><span class="ql">A</span>A prova direta funciona porque P → Q é sempre verdadeira.</div> <div class="qi" onclick="qc(this,true,'q2b')"><span class="ql">B</span>A prova direta funciona porque P → Q só é falsa quando P é verdadeiro e Q é falso — e a prova direta descarta exatamente esse caso.</div> <div class="qi" onclick="qc(this,false,'q2b')"><span class="ql">C</span>A prova direta funciona porque P → Q é falsa quando P é falso.</div> <div class="qfb" id="q2b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3: na prova da AM-GM, qual é a hipótese P?</div> <div class="qi" onclick="qc(this,false,'q2c')"><span class="ql">A</span>√(xy) ≤ (x+y)/2</div> <div class="qi" onclick="qc(this,true,'q2c')"><span class="ql">B</span>x > 0 e y > 0 (x e y são reais positivos)</div> <div class="qi" onclick="qc(this,false,'q2c')"><span class="ql">C</span>(√x − √y)² ≥ 0</div> <div class="qfb" id="q2c"></div></div> <button class="db" onclick="openDoubt('a2')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a2',this)">✓ Marcar Aula 02 como concluída</button>
+</section> <!-- ═══ AULA 3 ═══ -->
+<section class="sec" id="sec-a3"> <div class="sh"><div class="sl">Aula 03</div><h2>Prova por Contraposição</h2><p>Uma prova direta da forma equivalente ¬Q → ¬P</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 03 — em breve</div><div class="pd">~8 min</div></div><div class="vf"><span class="vft">Contraposição — quando P é difícil, trabalhe com ¬Q</span><span class="vtg">AULA 03</span></div></div> <a class="dlb" href="slides/Modulo2_Aula03_Contraposicao_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a3"><button class="tbb on" data-tab="a3c">Conceitual</button><button class="tbb" data-tab="a3f">Formal</button></div> <div class="tbp on" id="a3c"> <p>Do Módulo 1, sabemos que P → Q é logicamente equivalente a ¬Q → ¬P. A prova por contraposição explora exatamente isso: em vez de provar P → Q diretamente, provamos sua contraposição.</p> <p>Quando usar? Quando a hipótese P é complicada de trabalhar, mas a negação ¬Q é mais manejável. O exemplo clássico: provar "se x² − 6x + 5 é par, então x é ímpar" diretamente exigiria isolar x de uma expressão quadrática — difícil. Pela contraposição, assumimos "x é par" (¬Q) e mostramos que "x² − 6x + 5 é ímpar" (¬P) — muito mais simples.</p> <p><strong>Atenção:</strong> contraposição <em>não</em> é o mesmo que contradição. Na contraposição, provamos ¬Q → ¬P diretamente, sem assumir nenhum absurdo.</p> </div> <div class="tbp" id="a3f"> <p><strong>Por que é válida:</strong></p> <div class="lb">P → Q <span class="s">≡</span> ¬P ∨ Q <span class="s">≡</span> Q ∨ ¬P <span class="s">≡</span> ¬Q → ¬P</div> <p style="margin-top:12px"><strong>Estrutura:</strong></p> <div class="lb"><span class="k">Teorema:</span> P → Q<br><span class="k">Prova (contraposição):</span> Assuma ¬Q.<br><span class="n"> [deduções: ¬Q → … → ¬P]</span><br>Portanto ¬P. Logo P → Q. <span class="k">∎</span></div> <p style="margin-top:14px"><strong>Exemplo — x² − 6x + 5:</strong></p> <div class="lb"><span class="k">Teorema:</span> Se x² − 6x + 5 é par, então x é ímpar.<br><span class="k">Prova (contraposição):</span> Assuma ¬Q: x é par, logo x = 2a para algum a ∈ ℤ.<br>x² − 6x + 5 = 4a² − 12a + 5 = 4a² − 12a + 4 + 1 = 2(2a²−6a+2) + 1<br>Portanto x² − 6x + 5 é ímpar (¬P). <span class="k">∎</span></div> <p style="margin-top:14px"><strong>Exemplo — De Morgan na contraposição:</strong></p> <div class="lb"><span class="k">Teorema:</span> Se 5 não é divisível por xy, então 5 não é divisível por x nem por y.<br><span class="k">Prova (contraposição):</span> Assuma ¬Q: pela Lei de De Morgan,<br>"5 é divisível por x" OU "5 é divisível por y".<br>Em ambos os casos: xy = 5(ay) ou xy = 5(ax), logo 5 | xy (¬P). <span class="k">∎</span></div> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>Book of Proof (Hammack):</strong> Cap. 5 (pp. 106–116) — Prova por contraposição.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div> <div class="qi" onclick="qc(this,false,'q3a')"><span class="ql">A</span>A prova por contraposição assume P falso e mostra Q falso.</div> <div class="qi" onclick="qc(this,true,'q3a')"><span class="ql">B</span>A prova por contraposição assume ¬Q e mostra ¬P — é uma prova direta de ¬Q → ¬P.</div> <div class="qi" onclick="qc(this,false,'q3a')"><span class="ql">C</span>A prova por contraposição assume P e ¬Q e chega a uma contradição.</div> <div class="qfb" id="q3a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2: quando preferir contraposição à prova direta?</div> <div class="qi" onclick="qc(this,false,'q3b')"><span class="ql">A</span>Sempre — a contraposição é mais rigorosa que a prova direta.</div> <div class="qi" onclick="qc(this,true,'q3b')"><span class="ql">B</span>Quando ¬Q é mais fácil de trabalhar do que P, ou quando P é difícil de manipular diretamente.</div> <div class="qi" onclick="qc(this,false,'q3b')"><span class="ql">C</span>Quando Q é verdadeiro e P é falso.</div> <div class="qfb" id="q3b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3</div> <div class="qi" onclick="qc(this,false,'q3c')"><span class="ql">A</span>Contraposição e contradição são a mesma técnica com nomes diferentes.</div> <div class="qi" onclick="qc(this,true,'q3c')"><span class="ql">B</span>Na contraposição, prova-se ¬Q → ¬P diretamente. Na contradição, assume-se P ∧ ¬Q e busca-se um absurdo — são técnicas diferentes.</div> <div class="qi" onclick="qc(this,false,'q3c')"><span class="ql">C</span>Contraposição prova Q → P, não ¬Q → ¬P.</div> <div class="qfb" id="q3c"></div></div> <button class="db" onclick="openDoubt('a3')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a3',this)">✓ Marcar Aula 03 como concluída</button>
+</section> <!-- ═══ AULA 4 ═══ -->
+<section class="sec" id="sec-a4"> <div class="sh"><div class="sl">Aula 04</div><h2>Prova por Contradição</h2><p>Assumir o absurdo — e por que isso nem sempre é a melhor escolha</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 04 — em breve</div><div class="pd">~12 min</div></div><div class="vf"><span class="vft">Contradição — reductio ad absurdum e diferença com contraposição</span><span class="vtg">AULA 04</span></div></div> <a class="dlb" href="slides/Modulo2_Aula04_Contradicao_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a4"><button class="tbb on" data-tab="a4c">Conceitual</button><button class="tbb" data-tab="a4f">Formal</button></div> <div class="tbp on" id="a4c"> <p>A prova por contradição (ou <em>reductio ad absurdum</em>) funciona assim: assumimos que o que queremos provar é <strong>falso</strong> e mostramos que isso leva a uma contradição — uma situação logicamente impossível. Como um sistema lógico consistente não admite contradições, a hipótese de que a afirmação era falsa deve ser rejeitada.</p> <p><strong>Força:</strong> ao contrário das outras técnicas, a contradição serve para provar proposições <em>não condicionais</em> também — como "√2 é irracional" ou "existem infinitos primos". Nesses casos, não há P → Q explícito: basta assumir o contrário e chegar no absurdo.</p> <p><strong>Fraqueza:</strong> para proposições condicionais P → Q, a contradição frequentemente acaba sendo apenas uma contraposição disfarçada e mais complicada. Se você assumiu P ∧ ¬Q e sua contradição veio apenas de ¬Q, você na verdade fez uma contraposição — sem perceber. Nesse caso, a contraposição é preferível: mais simples e mais informativa.</p> </div> <div class="tbp" id="a4f"> <p><strong>Estrutura:</strong></p> <div class="lb"><span class="k">Para provar P → Q por contradição:</span><br>Assuma P e ¬Q.<br><span class="n"> [deduções que levam a C ∧ ¬C, uma contradição]</span><br>Contradição! Logo ¬Q é falso, portanto Q. <span class="k">∎</span></div> <div class="co r" style="margin-top:14px"><div class="co-t"> Cuidado — contradição ou contraposição?</div>Se ao provar P→Q por contradição (assumindo P ∧ ¬Q) você nunca usou P, ou sua contradição veio apenas de algo relacionado a ¬Q, então você fez uma contraposição. Reescreva — será mais clara.</div> <p style="margin-top:14px"><strong>Exemplo — √2 é irracional:</strong></p> <div class="lb"><span class="k">Teorema:</span> √2 ∉ ℚ<br><span class="k">Prova:</span> Assuma √2 ∈ ℚ. Logo √2 = a/b com a,b ∈ ℤ, b ≠ 0, sem fator comum.<br>Elevando ao quadrado: a² = 2b² → a² é par → a é par → a = 2k<br>Substituindo: b² = 2k² → b² é par → b é par.<br>Contradição: a e b não podem ser ambos pares (fração irredutível). <span class="k">∎</span></div> <p style="margin-top:14px"><strong>Exemplo — infinitos primos:</strong></p> <div class="lb"><span class="k">Teorema:</span> Existem infinitos números primos.<br><span class="k">Prova:</span> Assuma que existem apenas n primos: {p₁, p₂, …, pₙ}.<br>Defina a = (p₁·p₂·⋯·pₙ) + 1.<br>• Se a é primo: contradição (a ∉ {p₁,…,pₙ}).<br>• Se a não é primo: algum pₖ divide a. Mas pₖ divide p₁·⋯·pₙ,<br> logo pₖ divide 1. Impossível. Contradição. <span class="k">∎</span></div> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>Book of Proof (Hammack):</strong> Cap. 6 (pp. 118–130) — Prova por contradição.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div> <div class="qi" onclick="qc(this,false,'q4a')"><span class="ql">A</span>Na prova por contradição, assume-se ¬Q e mostra-se ¬P.</div> <div class="qi" onclick="qc(this,true,'q4a')"><span class="ql">B</span>Na prova por contradição de P → Q, assume-se P ∧ ¬Q e mostra-se que isso leva a uma impossibilidade lógica.</div> <div class="qi" onclick="qc(this,false,'q4a')"><span class="ql">C</span>Na prova por contradição, verifica-se que P → Q é falsa em algum caso.</div> <div class="qfb" id="q4a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2: por que a contradição é especialmente útil para √2 ∉ ℚ?</div> <div class="qi" onclick="qc(this,false,'q4b')"><span class="ql">A</span>Porque é a técnica mais fácil em geral.</div> <div class="qi" onclick="qc(this,true,'q4b')"><span class="ql">B</span>Porque é uma proposição não condicional — não tem forma P→Q — e a contradição é a técnica natural para esse tipo.</div> <div class="qi" onclick="qc(this,false,'q4b')"><span class="ql">C</span>Porque P → Q é muito difícil de identificar nesse teorema.</div> <div class="qfb" id="q4b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3: você está provando P→Q por contradição e percebe que nunca usou P. Isso significa:</div> <div class="qi" onclick="qc(this,false,'q4c')"><span class="ql">A</span>A prova está errada — P deve ser usado obrigatoriamente.</div> <div class="qi" onclick="qc(this,true,'q4c')"><span class="ql">B</span>Você fez, na verdade, uma prova por contraposição (¬Q→¬P). Reescreva assim — ficará mais simples e clara.</div> <div class="qi" onclick="qc(this,false,'q4c')"><span class="ql">C</span>A prova está correta e é mais forte por não precisar de P.</div> <div class="qfb" id="q4c"></div></div> <button class="db" onclick="openDoubt('a4')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a4',this)">✓ Marcar Aula 04 como concluída</button>
+</section> <!-- ═══ AULA 5 ═══ -->
+<section class="sec" id="sec-a5"> <div class="sh"><div class="sl">Aula 05</div><h2>Prova por Indução</h2><p>Caso base + passo indutivo — provar para todos os naturais de uma vez</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 05 — em breve</div><div class="pd">~12 min</div></div><div class="vf"><span class="vft">Indução Matemática — estrutura, validade e exemplos</span><span class="vtg">AULA 05</span></div></div> <a class="dlb" href="slides/Modulo2_Aula05_Inducao_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a5"><button class="tbb on" data-tab="a5c">Conceitual</button><button class="tbb" data-tab="a5f">Formal</button></div> <div class="tbp on" id="a5c"> <p>A indução resolve um problema que as outras técnicas não conseguem: provar que uma propriedade vale para <strong>todos os números naturais</strong> — infinitos casos — de uma só vez.</p> <p>A ideia é como uma fileira de dominós: se o primeiro cai (caso base) e cada dominó que cai derruba o seguinte (passo indutivo), então todos cairão. Formalmente, provamos P(1) e provamos que P(n) → P(n+1) para todo n. O axioma de indução garante que P(n) vale para todo n ∈ ℕ.</p> <p><strong>Atenção ao passo indutivo:</strong> o erro mais comum é provar P(n+1) sem usar a hipótese P(n). Se você não usou P(n), a prova está incompleta — ou você encontrou uma prova direta, não uma indução.</p> </div> <div class="tbp" id="a5f"> <p><strong>Axioma de indução:</strong></p> <div class="lb">(P(1) <span class="s">∧</span> (<span class="s">∀</span>n <span class="s">∈</span> ℕ)(P(n) <span class="s">→</span> P(n+1))) <span class="s">→</span> (<span class="s">∀</span>n <span class="s">∈</span> ℕ)P(n)</div> <p style="margin-top:12px"><strong>Estrutura da prova:</strong></p> <div class="lb"><span class="k">Teorema:</span> ∀n ∈ ℕ, P(n)<br><span class="k">Prova:</span><br><span class="k">Base:</span> Mostre P(1).<br><span class="k">Passo:</span> Assuma P(n) (hipótese de indução).<br> Mostre P(n+1) <em>usando P(n)</em>.<br><span class="k">Conclusão:</span> Por indução, P(n) vale para todo n ∈ ℕ. <span class="k">∎</span></div> <p style="margin-top:14px"><strong>Exemplo — 17ⁿ − 10ⁿ divisível por 7:</strong></p> <div class="lb"><span class="k">Base:</span> n=1: 17−10 = 7. Divisível por 7. ✓<br><span class="k">Passo:</span> Assuma 7 | (17ⁿ−10ⁿ). Então:<br>17ⁿ⁺¹ − 10ⁿ⁺¹ = 17·17ⁿ − 10·10ⁿ<br>= (7+10)·17ⁿ − 10·10ⁿ<br>= 7·17ⁿ + 10·(17ⁿ−10ⁿ)<br>7·17ⁿ é divisível por 7 ✓<br>10·(17ⁿ−10ⁿ) é divisível por 7 pela H.I. ✓<br>Logo 7 | (17ⁿ⁺¹−10ⁿ⁺¹). <span class="k">∎</span></div> <p style="margin-top:14px"><strong>Exemplo — n ímpar → n² ímpar (bidirecional):</strong></p> <div class="lb"><span class="k">Teorema:</span> n é ímpar ↔ n² é ímpar<br><span class="k">Ida (direta):</span> n = 2a+1 → n² = 4a²+4a+1 = 2(2a²+a)+1. Ímpar. ✓<br><span class="k">Volta (contraposição):</span> n par → n = 2a → n² = 4a² = 2(2a²). Par. ✓ <span class="k">∎</span></div> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>Book of Proof (Hammack):</strong> Cap. 10 (pp. 162–180) — Prova por indução matemática.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div> <div class="qi" onclick="qc(this,false,'q5a')"><span class="ql">A</span>Na indução, verifica-se P(n) para n = 1, 2, 3, … até um ponto razoável.</div> <div class="qi" onclick="qc(this,true,'q5a')"><span class="ql">B</span>Na indução, prova-se P(1) (caso base) e depois P(n) → P(n+1) (passo indutivo), garantindo P(n) para todo n ∈ ℕ.</div> <div class="qi" onclick="qc(this,false,'q5a')"><span class="ql">C</span>Na indução, assume-se P(n) falso e chega-se a uma contradição.</div> <div class="qfb" id="q5a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2: no passo indutivo, o que é a "hipótese de indução"?</div> <div class="qi" onclick="qc(this,false,'q5b')"><span class="ql">A</span>A afirmação P(1) que já foi provada no caso base.</div> <div class="qi" onclick="qc(this,true,'q5b')"><span class="ql">B</span>A suposição de que P(n) é verdadeiro para um n arbitrário — que é então usada para provar P(n+1).</div> <div class="qi" onclick="qc(this,false,'q5b')"><span class="ql">C</span>A afirmação P(n+1) que queremos provar.</div> <div class="qfb" id="q5b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3: no passo do exemplo 17ⁿ−10ⁿ, onde a hipótese de indução foi usada?</div> <div class="qi" onclick="qc(this,false,'q5c')"><span class="ql">A</span>Para mostrar que 7·17ⁿ é divisível por 7.</div> <div class="qi" onclick="qc(this,true,'q5c')"><span class="ql">B</span>Para concluir que 10·(17ⁿ−10ⁿ) é divisível por 7, pois a H.I. garante que 7 | (17ⁿ−10ⁿ).</div> <div class="qi" onclick="qc(this,false,'q5c')"><span class="ql">C</span>No caso base, quando n=1.</div> <div class="qfb" id="q5c"></div></div> <button class="db" onclick="openDoubt('a5')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a5',this)">✓ Marcar Aula 05 como concluída</button>
+</section> <!-- ═══ EXERCÍCIOS ═══ -->
+<section class="sec" id="sec-ex"> <div class="sh"><div class="sl">Exercícios</div><h2>Prática Interativa</h2><p>Múltipla escolha · Verdadeiro/Falso · Resposta livre · Análise de provas</p></div> <div class="sc-bar"> <div class="sc-ring" id="sc-ring"><div class="sc-in"><div class="sc-pct" id="sc-pct">0%</div><div class="sc-l">acertos</div></div></div> <div class="sc-txt"><div class="sc-h">Seu desempenho</div><div class="sc-d" id="sc-d">Responda as questões para ver sua pontuação</div></div> </div> <!-- EX 01 MC --> <div class="ec" id="e1"><div class="eh" onclick="tog('e1')"><span class="en">01</span><span class="et">múltipla escolha</span><span class="eq">Qual é o único caso em que a implicação P → Q é falsa?</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e1',false)"><span class="ml">a)</span>P falso e Q verdadeiro.</div> <div class="mi" onclick="mc(this,'e1',false)"><span class="ml">b)</span>P falso e Q falso.</div> <div class="mi" onclick="mc(this,'e1',true)"><span class="ml">c)</span>P verdadeiro e Q falso.</div> <div class="mi" onclick="mc(this,'e1',false)"><span class="ml">d)</span>P verdadeiro e Q verdadeiro.</div> </div><div class="mf" id="mf-e1"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e1')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 02 VF --> <div class="ec" id="e2"><div class="eh" onclick="tog('e2')"><span class="en">02</span><span class="et">verdadeiro / falso</span><span class="eq">A prova por contraposição de P → Q consiste em assumir P ∧ ¬Q e chegar a uma contradição.</span><span class="ea">▼</span></div> <div class="eb"><div style="margin-top:11px;font-size:13.5px;color:#5C6270">A afirmação acima é:</div> <div class="vo"><div class="vi" onclick="vf(this,'e2',false)">✓ Verdadeiro</div><div class="vi" onclick="vf(this,'e2',true)">✗ Falso</div></div> <div class="mf" id="mf-e2"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e2')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 03 MC --> <div class="ec" id="e3"><div class="eh" onclick="tog('e3')"><span class="en">03</span><span class="et">múltipla escolha</span><span class="eq">Qual técnica é mais adequada para provar "√2 é irracional"?</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e3',false)"><span class="ml">a)</span>Prova direta — assume-se √2 racional e deduz-se uma propriedade.</div> <div class="mi" onclick="mc(this,'e3',false)"><span class="ml">b)</span>Prova por contraposição — a proposição tem forma P→Q clara.</div> <div class="mi" onclick="mc(this,'e3',true)"><span class="ml">c)</span>Prova por contradição — é uma proposição não condicional, ideal para assumir o contrário e chegar ao absurdo.</div> <div class="mi" onclick="mc(this,'e3',false)"><span class="ml">d)</span>Prova por indução — vale para todos os irracionais.</div> </div><div class="mf" id="mf-e3"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e3')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 04 Resposta livre --> <div class="ec" id="e4"><div class="eh" onclick="tog('e4')"><span class="en">04</span><span class="et">resposta livre</span><span class="eq">Identifique as duas etapas de uma prova por indução. Escreva: "base" e "passo".</span><span class="ea">▼</span></div> <div class="eb"><div class="txw"><input class="txi" id="tx-e4" type="text" placeholder="Ex: base e passo"></div> <div class="br"><button class="ckb" onclick="tx('e4',['base e passo','caso base e passo indutivo','base e passo indutivo','caso base e indução'])">Verificar</button><button class="hb" onclick="hint('hx-e4')"> Dica</button></div> <div class="hx" id="hx-e4">A indução tem dois momentos: provar para o primeiro caso, e provar que se vale para n também vale para n+1.</div> <div class="mf" id="mf-e4"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e4')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 05 MC — análise de prova --> <div class="ec" id="e5"><div class="eh" onclick="tog('e5')"><span class="en">05</span><span class="et">múltipla escolha</span><span class="eq">Você está provando P→Q por contradição (assumiu P ∧ ¬Q). Ao final, percebe que nunca usou P na sua dedução. O que isso indica?</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e5',false)"><span class="ml">a)</span>A prova está errada — P sempre deve ser usado.</div> <div class="mi" onclick="mc(this,'e5',true)"><span class="ml">b)</span>Você fez, na prática, uma prova por contraposição (¬Q→¬P). Reescreva assim — ficará mais simples.</div> <div class="mi" onclick="mc(this,'e5',false)"><span class="ml">c)</span>A prova está mais forte por não depender de P.</div> </div> <div class="br"><button class="hb" onclick="hint('hx-e5')"> Dica</button></div> <div class="hx" id="hx-e5">A diferença entre contradição e contraposição está em P: na contradição, assume-se P ∧ ¬Q. Se P não foi usado, a prova é essencialmente ¬Q → ¬P — ou seja, contraposição.</div> <div class="mf" id="mf-e5"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e5')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 06 VF — indução --> <div class="ec" id="e6"><div class="eh" onclick="tog('e6')"><span class="en">06</span><span class="et">verdadeiro / falso</span><span class="eq">Na prova por indução de ∀n P(n), verificar P(1), P(2) e P(3) é suficiente para concluir que P(n) vale para todo n ∈ ℕ.</span><span class="ea">▼</span></div> <div class="eb"><div style="margin-top:11px;font-size:13.5px;color:#5C6270">A afirmação acima é:</div> <div class="vo"><div class="vi" onclick="vf(this,'e6',false)">✓ Verdadeiro</div><div class="vi" onclick="vf(this,'e6',true)">✗ Falso</div></div> <div class="mf" id="mf-e6"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e6')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 07 MC — pirâmide (PBL 3) --> <div class="ec" id="e7"><div class="eh" onclick="tog('e7')"><span class="en">07</span><span class="et">múltipla escolha</span><span class="eq">Ramsés quer provar que uma pirâmide de base n×n usa n(n+1)(2n+1)/6 blocos. No passo indutivo, ele assume que a fórmula vale para n e quer provar para n+1. Quantos blocos a mais uma pirâmide de base (n+1)×(n+1) tem em relação à de base n×n?</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e7',false)"><span class="ml">a)</span>n blocos.</div> <div class="mi" onclick="mc(this,'e7',false)"><span class="ml">b)</span>n+1 blocos.</div> <div class="mi" onclick="mc(this,'e7',true)"><span class="ml">c)</span>(n+1)² blocos — o nível base da nova pirâmide.</div> <div class="mi" onclick="mc(this,'e7',false)"><span class="ml">d)</span>2(n+1) blocos.</div> </div> <div class="br"><button class="hb" onclick="hint('hx-e7')"> Dica</button></div> <div class="hx" id="hx-e7">A pirâmide de base (n+1)×(n+1) é a pirâmide de base n×n com um nível novo embaixo. Esse nível tem (n+1)×(n+1) blocos.</div> <div class="mf" id="mf-e7"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e7')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 08 MC — erro na indução (PBL 3 parte 2) --> <div class="ec" id="e8"><div class="eh" onclick="tog('e8')"><span class="en">08</span><span class="et">múltipla escolha</span><span class="eq">Raquel tenta provar "todas as pessoas são iguais" por indução: o caso base P(1) é trivialmente verdadeiro. No passo indutivo (de n para n+1 pessoas), ela retira uma pessoa, aplica a hipótese ao grupo de n e recoloca a pessoa. Onde está o erro?</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e8',false)"><span class="ml">a)</span>O caso base P(1) está errado.</div> <div class="mi" onclick="mc(this,'e8',false)"><span class="ml">b)</span>A hipótese de indução P(n) foi mal aplicada.</div> <div class="mi" onclick="mc(this,'e8',true)"><span class="ml">c)</span>O passo de n=1 para n=2 falha: com 2 pessoas, os dois subgrupos de 1 pessoa não têm interseção, logo não se pode concluir que as duas são iguais.</div> </div> <div class="br"><button class="hb" onclick="hint('hx-e8')"> Dica</button></div> <div class="hx" id="hx-e8">O argumento funciona para n≥3, pois ao retirar cada pessoa o grupo restante tem ao menos 2 pessoas que se "sobrepõem". O erro está no passo n=1→n=2, onde os dois subgrupos de 1 pessoa não compartilham nenhum elemento.</div> <div class="mf" id="mf-e8"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e8')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 09 VF — provas bicondicionais --> <div class="ec" id="e9"><div class="eh" onclick="tog('e9')"><span class="en">09</span><span class="et">verdadeiro / falso</span><span class="eq">Para provar P ↔ Q basta provar P → Q; a volta Q → P é automática.</span><span class="ea">▼</span></div> <div class="eb"><div style="margin-top:11px;font-size:13.5px;color:#5C6270">A afirmação acima é:</div> <div class="vo"><div class="vi" onclick="vf(this,'e9',false)">✓ Verdadeiro</div><div class="vi" onclick="vf(this,'e9',true)">✗ Falso</div></div> <div class="mf" id="mf-e9"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e9')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 10 MC — escolha da técnica (PBL 2) --> <div class="ec" id="e10"><div class="eh" onclick="tog('e10')"><span class="en">10</span><span class="et">múltipla escolha</span><span class="eq">Você quer provar: "Se A ⊆ B, então x ∉ B → x ∉ A". Qual técnica é mais natural e elegante?</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e10',false)"><span class="ml">a)</span>Contradição: assume-se A ⊆ B, x ∉ B e x ∈ A, e busca-se absurdo.</div> <div class="mi" onclick="mc(this,'e10',true)"><span class="ml">b)</span>Contraposição: nega-se a conclusão (x ∈ A) e deduz-se a negação da hipótese (x ∈ B) usando A ⊆ B — direto e sem hipóteses extras.</div> <div class="mi" onclick="mc(this,'e10',false)"><span class="ml">c)</span>Indução: prova-se para cada elemento x ∈ ℕ.</div> </div> <div class="br"><button class="hb" onclick="hint('hx-e10')"> Dica</button></div> <div class="hx" id="hx-e10">A contradição aqui assume A⊆B ∧ x∉B ∧ x∈A e chega em x∈B (contradizendo x∉B). Mas note: a hipótese extra x∉B não foi realmente necessária para o raciocínio — você basicamente provou x∈A → x∈B, que é a contraposição. Logo, a contraposição é mais direta.</div> <div class="mf" id="mf-e10"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e10')"> Dúvidas sobre esta questão?</button></div></div> <button class="cb" onclick="markDone('ex',this)">✓ Marcar Exercícios como concluídos</button>
+</section>
+<section class="sec" id="sec-gl">
+<div class="sh"><div class="sl">Consulta</div><h2>Glossário de símbolos</h2></div>
+<p class="gl-sub">Todos os símbolos usados neste módulo, agrupados por função</p>
+<p class="gl-intro">Esta página existe para consulta rápida. A última coluna indica onde o símbolo é apresentado — os marcados como Módulo 1 vêm do módulo anterior e são usados aqui sem reapresentação.</p>
+<div class="gl-grp">
+<div class="gl-t">Estrutura de uma demonstração</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">∎</td><td class="gl-n">Fim da demonstração</td><td class="gl-l">“fim da prova”, “o que se queria demonstrar”</td><td class="gl-d">Marca onde o argumento termina. Também aparece como □ ou como a sigla latina para “o que se queria demonstrar”.</td><td class="gl-a"><span class="gl-tag">Aula 02</span></td></tr>
+<tr><td class="gl-s">⊢</td><td class="gl-n">Deduz</td><td class="gl-l">“deduz”, “de onde se conclui”</td><td class="gl-d">Separa as premissas da conclusão que se obtém delas. Em P → Q, Q → R, P ⊢ R, tudo à esquerda é dado e R é o resultado.</td><td class="gl-a"><span class="gl-tag">Aula 01</span></td></tr>
+<tr><td class="gl-s">P(n)</td><td class="gl-n">Predicado</td><td class="gl-l">“pê de ene”</td><td class="gl-d">Uma afirmação que depende de n e que pode ser verdadeira para uns valores e falsa para outros. É o que a indução prova para todos os naturais.</td><td class="gl-a"><span class="gl-tag">Aula 05</span></td></tr>
+<tr><td class="gl-s">A ∧ ¬A</td><td class="gl-n">Contradição</td><td class="gl-l">“A e não A”</td><td class="gl-d">Uma afirmação simultaneamente verdadeira e falsa. É o absurdo que a prova por contradição procura produzir.</td><td class="gl-a"><span class="gl-tag">Aula 04</span></td></tr>
+</tbody></table>
+</div>
+<div class="gl-grp">
+<div class="gl-t">Conectivos e quantificadores — revisão do Módulo 1</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">¬</td><td class="gl-n">Negação</td><td class="gl-l">“não P”</td><td class="gl-d">Inverte o valor de verdade de P.</td><td class="gl-a"><span class="gl-tag">Módulo 1</span></td></tr>
+<tr><td class="gl-s">∧</td><td class="gl-n">Conjunção</td><td class="gl-l">“P e Q”</td><td class="gl-d">Verdadeira somente quando as duas são verdadeiras.</td><td class="gl-a"><span class="gl-tag">Módulo 1</span></td></tr>
+<tr><td class="gl-s">∨</td><td class="gl-n">Disjunção</td><td class="gl-l">“P ou Q”</td><td class="gl-d">Verdadeira quando ao menos uma é verdadeira.</td><td class="gl-a"><span class="gl-tag">Módulo 1</span></td></tr>
+<tr><td class="gl-s">→</td><td class="gl-n">Implicação</td><td class="gl-l">“se P, então Q”</td><td class="gl-d">O formato de todo teorema. Falsa apenas quando P é verdadeira e Q é falsa.</td><td class="gl-a"><span class="gl-tag">Módulo 1</span></td></tr>
+<tr><td class="gl-s">↔</td><td class="gl-n">Equivalência</td><td class="gl-l">“P se e somente se Q”</td><td class="gl-d">Exige provar as duas direções, ida e volta.</td><td class="gl-a"><span class="gl-tag">Módulo 1</span></td></tr>
+<tr><td class="gl-s">≡</td><td class="gl-n">Equivalência lógica</td><td class="gl-l">“é logicamente equivalente a”</td><td class="gl-d">Duas expressões com a mesma tabela verdade. É o que justifica a prova por contraposição: P → Q ≡ ¬Q → ¬P.</td><td class="gl-a"><span class="gl-tag">Aula 03</span></td></tr>
+<tr><td class="gl-s">∀</td><td class="gl-n">Para todo</td><td class="gl-l">“para todo”, “qualquer que seja”</td><td class="gl-d">Afirma que a propriedade vale para todos os elementos. É o que a indução estabelece sobre os naturais.</td><td class="gl-a"><span class="gl-tag">Aula 05</span></td></tr>
+<tr><td class="gl-s">∃</td><td class="gl-n">Existe</td><td class="gl-l">“existe ao menos um”</td><td class="gl-d">Afirma que há pelo menos um elemento com a propriedade. Provar exige exibir um exemplo.</td><td class="gl-a"><span class="gl-tag">Módulo 1</span></td></tr>
+</tbody></table>
+</div>
+<div class="gl-grp">
+<div class="gl-t">Pertinência e conjuntos</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">∈</td><td class="gl-n">Pertence</td><td class="gl-l">“x pertence a A”</td><td class="gl-d">Indica que o objeto é elemento do conjunto. Aparece em k ∈ ℤ, n ∈ ℕ e semelhantes.</td><td class="gl-a"><span class="gl-tag">Aula 01</span></td></tr>
+<tr><td class="gl-s">∉</td><td class="gl-n">Não pertence</td><td class="gl-l">“x não pertence a A”</td><td class="gl-d">A negação da pertinência. O teorema da raiz de dois se escreve √2 ∉ ℚ.</td><td class="gl-a"><span class="gl-tag">Aula 04</span></td></tr>
+<tr><td class="gl-s">⊆</td><td class="gl-n">Contido</td><td class="gl-l">“A está contido em B”</td><td class="gl-d">Todo elemento de A também está em B.</td><td class="gl-a"><span class="gl-tag">Módulo 1</span></td></tr>
+</tbody></table>
+</div>
+<div class="gl-grp">
+<div class="gl-t">Conjuntos numéricos</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">ℕ</td><td class="gl-n">Números naturais</td><td class="gl-l">“os naturais”</td><td class="gl-d">Os números de contagem: 1, 2, 3, e assim por diante. É sobre eles que a indução funciona.</td><td class="gl-a"><span class="gl-tag">Aula 05</span></td></tr>
+<tr><td class="gl-s">ℤ</td><td class="gl-n">Números inteiros</td><td class="gl-l">“os inteiros”</td><td class="gl-d">Os naturais, seus negativos e o zero. Aparece sempre que escrevemos n = 2k para algum k.</td><td class="gl-a"><span class="gl-tag">Aula 02</span></td></tr>
+<tr><td class="gl-s">ℚ</td><td class="gl-n">Números racionais</td><td class="gl-l">“os racionais”</td><td class="gl-d">Os números que podem ser escritos como fração de inteiros. A raiz de dois não é um deles.</td><td class="gl-a"><span class="gl-tag">Aula 04</span></td></tr>
+<tr><td class="gl-s">ℝ</td><td class="gl-n">Números reais</td><td class="gl-l">“os reais”</td><td class="gl-d">Todos os números da reta numérica.</td><td class="gl-a"><span class="gl-tag">Aula 02</span></td></tr>
+</tbody></table>
+</div>
+<div class="gl-grp">
+<div class="gl-t">Aritmética usada nas provas</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">|</td><td class="gl-n">Divide</td><td class="gl-l">“7 divide n”</td><td class="gl-d">Indica divisibilidade exata: 7 | n significa que n é múltiplo de 7. Cuidado para não confundir com o módulo.</td><td class="gl-a"><span class="gl-tag">Aula 05</span></td></tr>
+<tr><td class="gl-s">mdc</td><td class="gl-n">Máximo divisor comum</td><td class="gl-l">“máximo divisor comum de p e q”</td><td class="gl-d">O maior inteiro que divide os dois. Quando vale 1, a fração está irredutível — é disso que a prova da raiz de dois extrai a contradição.</td><td class="gl-a"><span class="gl-tag">Aula 04</span></td></tr>
+<tr><td class="gl-s">√</td><td class="gl-n">Raiz quadrada</td><td class="gl-l">“raiz de”</td><td class="gl-d">O número não negativo cujo quadrado é o valor dado.</td><td class="gl-a"><span class="gl-tag">Aula 02</span></td></tr>
+<tr><td class="gl-s">≠</td><td class="gl-n">Diferente</td><td class="gl-l">“diferente de”</td><td class="gl-d">Nega a igualdade. Conclusões com ≠ costumam ser sinal de que vale tentar a contraposição.</td><td class="gl-a"><span class="gl-tag">Aula 03</span></td></tr>
+<tr><td class="gl-s">≥  ≤</td><td class="gl-n">Maior ou igual, menor ou igual</td><td class="gl-l">“maior ou igual a”, “menor ou igual a”</td><td class="gl-d">Comparações não estritas. Negar a ≥ 0 dá a &lt; 0, com o igual mudando de lado.</td><td class="gl-a"><span class="gl-tag">Aula 02</span></td></tr>
+</tbody></table>
+</div>
+</section>
+ </main>
+</div> <button class="mob" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button> <!-- MODAL -->
+<div class="ov" id="modal" onclick="closeModal(event)"> <div class="md"> <div class="mdh"><div class="mdt"> Prompt para IA — Tire sua dúvida</div><button class="mdc" onclick="closeModal()">✕</button></div> <div class="mdb">Copie o prompt abaixo e cole no <strong>Claude AI</strong> (claude.ai) ou em qualquer assistente de IA para obter apoio.</div> <div class="mdp" id="mdp"></div> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"> <button class="cpb" id="cpb" onclick="copyPrompt()"> Copiar prompt</button> <a href="https://claude.ai" target="_blank" style="font-family:'Lora', Georgia, serif;font-size:12px;color:#17365E;text-decoration:underline">Abrir Claude AI →</a> </div> </div>
+</div> <script>
+// ── STATE ──
+const secs = ['disc','ov','a1','a2','a3','a4','a5','ex'];
+const done = {ov:true};
+let answered = 0, correct = 0;
+const recorded = {};
+
+// ── NAVIGATION ──
+function show(id) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('vis'));
+  const el = document.getElementById('sec-' + id);
+  if (el) el.classList.add('vis');
+  document.querySelectorAll('.nav-a').forEach(a => {
+    a.classList.toggle('active', (a.getAttribute('onclick')||'').includes("'"+id+"'"));
+  });
+  document.getElementById('main').scrollTo({top:0, behavior:'smooth'});
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+// ── TABS ──
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tbr').forEach(row => {
+    const group = row.dataset.group;
+    row.querySelectorAll('.tbb').forEach(btn => {
+      btn.addEventListener('click', () => {
+        row.querySelectorAll('.tbb').forEach(b => b.classList.remove('on'));
+        btn.classList.add('on');
+        const sec = btn.closest('.sec');
+        if (sec) sec.querySelectorAll('.tbp').forEach(p => { if (p.id && p.id.startsWith(group)) p.classList.remove('on'); });
+        const t = document.getElementById(btn.dataset.tab);
+        if (t) t.classList.add('on');
+      });
+    });
+  });
+});
+
+// ── PROGRESS ──
+function updProg() {
+  const d = secs.filter(s => done[s]).length;
+  const p = Math.round(d / secs.length * 100);
+  document.getElementById('pp').textContent = p + '%';
+  document.getElementById('pf').style.width = p + '%';
+}
+function markDone(id, btn) {
+  done[id] = true;
+  if (btn) { btn.classList.add('done'); btn.innerHTML = '✓ Concluído!'; }
+  const ck = document.getElementById('ck-' + id);
+  if (ck) { ck.classList.add('done'); ck.textContent = '✓'; }
+  updProg();
+}
+
+// ── QUICK CHECKS ──
+const qfb = {
+  q1a:['Correto — a prova deve ser válida para todos os casos, não apenas para exemplos.','Verificar casos específicos não é suficiente — um contraexemplo pode sempre aparecer.'],
+  q1b:['Exato — axiomas são o ponto de partida irredutível de todo o sistema matemático.','Axiomas não precisam de prova — são as verdades primitivas do sistema.'],
+  q1c:['Modus ponens: de P→Q e P, concluímos Q — não o contrário.','Cuidado com a direção: MP vai de P para Q, não de Q para P.'],
+  q2a:['Exato — prova direta: assume P, deduz Q.','Na prova direta o ponto de partida é sempre P verdadeiro.'],
+  q2b:['Correto — a implicação só é falsa em P=V, Q=F, e a prova direta elimina esse caso.','Revisit: P→Q é falsa apenas quando P=V e Q=F.'],
+  q2c:['Sim — P = "x e y são reais positivos". A conclusão Q é a desigualdade AM-GM.','Na AM-GM, a hipótese (P) é a positividade de x e y.'],
+  q3a:['Correto — contraposição é uma prova direta de ¬Q→¬P. Sem assumir absurdo nenhum.','Confusão frequente: contraposição ≠ contradição. Na contraposição, assume-se ¬Q e deduz-se ¬P diretamente.'],
+  q3b:['Exato — use contraposição quando ¬Q é mais tratável do que P.','A contraposição não é sempre melhor — só quando a negação da conclusão facilita o trabalho.'],
+  q3c:['Correto — são técnicas distintas. Contraposição: prova direta de ¬Q→¬P. Contradição: assume P∧¬Q e busca absurdo.','Contraposição ≠ contradição. São estruturas diferentes.'],
+  q4a:['Correto — assume P∧¬Q e deriva uma contradição lógica.','Na contradição de P→Q, assume-se P e ¬Q juntos e busca-se o absurdo.'],
+  q4b:['Correto — proposições não condicionais como "√2 ∉ ℚ" são o terreno natural da contradição.','√2 ∉ ℚ não tem forma P→Q explícita — por isso a contradição é a escolha natural.'],
+  q4c:['Exato — se P não foi usado, a prova é essencialmente ¬Q→¬P, ou seja, contraposição.','P não foi usado → a prova é uma contraposição disfarçada. Reescreva.'],
+  q5a:['Correto — caso base + passo indutivo garantem P(n) para todos os naturais.','Indução não é verificação finita — o passo indutivo cobre infinitos casos de uma vez.'],
+  q5b:['Exato — a hipótese de indução é P(n) assumido verdadeiro, usada para provar P(n+1).','A hipótese de indução é o P(n) assumido no passo indutivo.'],
+  q5c:['Correto — 10·(17ⁿ−10ⁿ): a hipótese de indução garante que 17ⁿ−10ⁿ é divisível por 7.','A H.I. foi usada no segundo termo do passo indutivo.'],
+};
+function qc(el, ok, fid) {
+  const wrap = el.parentElement;
+  wrap.querySelectorAll('.qi').forEach(i => { i.classList.add('done'); i.style.pointerEvents='none'; });
+  el.classList.add(ok ? 'ok' : 'no');
+  const fb = document.getElementById(fid);
+  fb.className = 'qfb show ' + (ok ? 'ok' : 'no');
+  const msgs = qfb[fid] || ['Correto!', 'Não exatamente.'];
+  fb.textContent = (ok ? '✓ ' : '✗ ') + msgs[ok ? 0 : 1];
+}
+
+// ── EXERCISES ──
+function tog(id) { document.getElementById(id).classList.toggle('op'); }
+
+const exfb = {
+  e1:['✓ Correto! P→Q é falsa somente quando P=V e Q=F.','✗ P→Q é falsa apenas quando P=V e Q=F. Nos outros 3 casos é verdadeira.'],
+  e2:['','✗ Atenção: a descrição no enunciado é da contradição (P∧¬Q → absurdo), não da contraposição (¬Q→¬P). São técnicas diferentes.'],
+  e3:['✓ Correto! "√2 é irracional" não tem forma P→Q — é uma proposição direta. A contradição (assumir √2 ∈ ℚ e chegar ao absurdo) é a técnica natural.','✗ A técnica certa é a contradição — "√2 ∉ ℚ" é proposição não condicional.'],
+  e4:['✓ Correto! Caso base (P(1)) e passo indutivo (P(n)→P(n+1)).','✗ As duas etapas são: caso base e passo indutivo.'],
+  e5:['✓ Correto! Se P não foi usado, a prova é essencialmente ¬Q→¬P — uma contraposição. Reescreva assim.','✗ Se P não foi usado na contradição, você fez uma contraposição disfarçada.'],
+  e6:['','✗ Verificar casos finitos nunca é suficiente para provar ∀n P(n). É necessário o passo indutivo P(n)→P(n+1) para cobrir todos os infinitos naturais.'],
+  e7:['✓ Correto! A pirâmide de base (n+1)×(n+1) tem todos os blocos da de base n×n mais um nível de (n+1)² blocos na base.','✗ O nível extra tem (n+1)² blocos — o tamanho do novo nível base.'],
+  e8:['✓ Correto! O erro está em n=1→n=2: com 2 pessoas e grupos de 1, não há sobreposição. O argumento falha exatamente nesse passo.','✗ O erro está no passo n=1→n=2, onde os dois subgrupos de 1 pessoa não se intersectam.'],
+  e9:['','✗ P↔Q exige provar os dois sentidos: P→Q (ida) e Q→P (volta). Nenhum implica o outro automaticamente.'],
+  e10:['✓ Correto! A contraposição é mais direta: assume x∈A e conclui x∈B via A⊆B. A contradição funciona mas usa uma hipótese extra desnecessária.','✗ A contraposição é mais elegante aqui: a contradição usa x∉B como hipótese extra, que acaba sendo desnecessária.'],
+};
+
+function rec(id, ok) {
+  if (recorded[id] !== undefined) return;
+  recorded[id] = ok; answered++; if (ok) correct++;
+  updScore();
+}
+function updScore() {
+  const p = answered > 0 ? Math.round(correct/answered*100) : 0;
+  document.getElementById('sc-pct').textContent = p + '%';
+  document.getElementById('sc-d').textContent = answered > 0
+    ? correct + ' de ' + answered + ' questões respondidas corretamente'
+    : 'Responda as questões para ver sua pontuação';
+  const col = p >= 70 ? '#17365E' : p >= 40 ? '#E3B505' : '#9C3B2E';
+  document.getElementById('sc-ring').style.background = 'conic-gradient(' + col + ' ' + p + '%, #E4E2DA 0%)';
+}
+function mc(el, id, ok) {
+  document.getElementById(id).querySelectorAll('.mi').forEach(m => { m.classList.add('done'); m.style.pointerEvents='none'; });
+  el.classList.add(ok ? 'ok' : 'no');
+  const fb = document.getElementById('mf-'+id);
+  const msgs = exfb[id] || ['✓ Correto!','✗ Tente novamente.'];
+  fb.className = 'mf show ' + (ok ? 'ok' : 'no');
+  fb.textContent = msgs[ok ? 0 : 1];
+  rec(id, ok);
+}
+function vf(el, id, ok) {
+  el.parentElement.querySelectorAll('.vi').forEach(v => { v.style.pointerEvents='none'; });
+  el.classList.add(ok ? 'ok' : 'no');
+  const fb = document.getElementById('mf-'+id);
+  const msgs = exfb[id] || ['✓ Correto!','✗ Tente novamente.'];
+  fb.className = 'mf show ' + (ok ? 'ok' : 'no');
+  fb.textContent = msgs[ok ? 0 : 1] || (ok ? '✓ Correto!' : '✗ Tente novamente.');
+  rec(id, ok);
+}
+function tx(id, accepted) {
+  const inp = document.getElementById('tx-'+id);
+  const val = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+  const ok = accepted.some(a => val === a.toLowerCase());
+  inp.className = 'txi ' + (ok ? 'ok' : 'no');
+  const fb = document.getElementById('mf-'+id);
+  const msgs = exfb[id] || ['✓ Correto!','✗ Tente novamente.'];
+  fb.className = 'mf show ' + (ok ? 'ok' : 'no');
+  fb.textContent = msgs[ok ? 0 : 1];
+  rec(id, ok);
+}
+function hint(id) { const el = document.getElementById(id); if(el) el.classList.toggle('show'); }
+
+// ── DOUBT MODAL ──
+const prompts = {
+  a1:`Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP. Estou estudando o Módulo 2 de Matemática — Técnicas de Demonstração. Aula 01: "O que é uma Prova Matemática?".
+
+Tópicos: axiomas, modus ponens, estrutura de uma cadeia de dedução.
+
+Por favor: explique os conceitos envolvidos, dê o passo a passo do raciocínio e, se possível, use exemplos do contexto econômico ou matemático.`,
+  a2:`Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP. Módulo 2 — Aula 02: Prova Direta.
+
+Tópicos: assumir P e deduzir Q; por que a prova direta é válida; exemplos (AM-GM, múltiplos de 4).
+
+Por favor: explique os conceitos envolvidos, dê o passo a passo do raciocínio e forneça exemplos similares.`,
+  a3:`Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP. Módulo 2 — Aula 03: Prova por Contraposição.
+
+Tópicos: equivalência P→Q ≡ ¬Q→¬P; quando preferir contraposição à prova direta; diferença com contradição; exemplos (x²−6x+5, De Morgan).
+
+Por favor: explique os conceitos envolvidos, dê o passo a passo do raciocínio e forneça exemplos similares.`,
+  a4:`Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP. Módulo 2 — Aula 04: Prova por Contradição.
+
+Tópicos: assumir P∧¬Q e chegar à contradição; proposições não condicionais; diferença com contraposição; quando usar cada uma; exemplos (√2 irracional, infinitos primos).
+
+Por favor: explique os conceitos envolvidos, dê o passo a passo do raciocínio e forneça exemplos similares.`,
+  a5:`Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP. Módulo 2 — Aula 05: Prova por Indução.
+
+Tópicos: axioma de indução; caso base; passo indutivo; hipótese de indução; exemplos (17ⁿ−10ⁿ divisível por 7; n ímpar ↔ n² ímpar).
+
+Por favor: explique os conceitos envolvidos, dê o passo a passo do raciocínio e forneça exemplos similares.`,
+  ex:`Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP. Estou nos exercícios do Módulo 2 — Técnicas de Demonstração.
+
+Por favor: explique os conceitos de demonstração matemática envolvidos, dê o passo a passo da solução e forneça exemplos similares.`,
+};
+
+function openDoubt(id) {
+  document.getElementById('mdp').textContent = prompts[id] || prompts['ex'];
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('cpb').textContent = ' Copiar prompt';
+  document.getElementById('cpb').className = 'cpb';
+}
+
+function openDoubt_ex(eid) {
+  const questions = {
+    e1:'Qual é o único caso em que a implicação P → Q é falsa?\n(a) P falso e Q verdadeiro\n(b) P falso e Q falso\n(c) P verdadeiro e Q falso\n(d) P verdadeiro e Q verdadeiro',
+    e2:'Verdadeiro ou Falso: A prova por contraposição de P → Q consiste em assumir P ∧ ¬Q e chegar a uma contradição.',
+    e3:'Qual técnica é mais adequada para provar "√2 é irracional"?\n(a) Prova direta\n(b) Contraposição\n(c) Contradição\n(d) Indução',
+    e4:'Identifique as duas etapas de uma prova por indução.',
+    e5:'Você está provando P→Q por contradição e percebe que nunca usou P. O que isso indica?\n(a) A prova está errada\n(b) Você fez uma contraposição disfarçada\n(c) A prova é mais forte',
+    e6:'Verdadeiro ou Falso: Na indução de ∀n P(n), verificar P(1), P(2) e P(3) é suficiente.',
+    e7:'Ramsés quer provar a fórmula para blocos de uma pirâmide por indução. No passo indutivo, quantos blocos a mais tem a pirâmide de base (n+1)×(n+1) em relação à de base n×n?\n(a) n  (b) n+1  (c) (n+1)²  (d) 2(n+1)',
+    e8:'Raquel tenta provar "todas as pessoas são iguais" por indução. Onde está o erro no argumento dela?\n(a) No caso base\n(b) Na hipótese de indução\n(c) No passo n=1 para n=2',
+    e9:'Verdadeiro ou Falso: Para provar P ↔ Q basta provar P → Q.',
+    e10:'Qual técnica é mais elegante para provar: "Se A ⊆ B, então x ∉ B → x ∉ A"?\n(a) Contradição\n(b) Contraposição\n(c) Indução',
+  };
+  const q = questions[eid] || '';
+  const prompt = `Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP. Estou estudando o Módulo 2 de Matemática — Técnicas de Demonstração.
+
+Preciso de ajuda com o seguinte exercício:
+
+${q}
+
+Por favor:
+1. Explique os conceitos de demonstração matemática envolvidos nesta questão.
+2. Dê o passo a passo da solução.
+3. Se for útil, forneça um exemplo similar para reforçar o entendimento.`;
+  document.getElementById('mdp').textContent = prompt;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('cpb').textContent = ' Copiar prompt';
+  document.getElementById('cpb').className = 'cpb';
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal'))
+    document.getElementById('modal').classList.remove('open');
+}
+function copyPrompt() {
+  navigator.clipboard.writeText(document.getElementById('mdp').textContent).then(() => {
+    const btn = document.getElementById('cpb');
+    btn.textContent = '✓ Copiado!';
+    btn.className = 'cpb copied';
+    setTimeout(() => { btn.textContent=' Copiar prompt'; btn.className='cpb'; }, 2500);
+  });
+}
+
+updProg();
+updScore();
+</script>
+</body>
+</html>

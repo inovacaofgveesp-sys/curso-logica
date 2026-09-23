@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 1 — Lógica e Linguagem Matemática · FGV EESP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style> /* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: #FCFCFB;
+  color: #101A2C;
+  font-family: "Spectral", Georgia, serif;
+  font-size: 16px;
+  line-height: 1.75;
+}
+a { color: inherit; text-decoration: none; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #FCFCFB; }
+::-webkit-scrollbar-thumb { background: #E4E2DA; border-radius: 0; }
+
+/* ── LAYOUT ── */
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 272px;
+  flex-shrink: 0;
+  background: #17365E;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+.sb-head {
+  padding: 22px 18px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.badge {
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #E3B505;
+  background: rgba(227, 181, 5,.12);
+  border: 1px solid rgba(227, 181, 5,.3);
+  padding: 3px 9px;
+  border-radius: 0;
+  display: inline-block;
+  margin-bottom: 9px;
+}
+.sb-title {
+  font-family: "Lora", Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+.sb-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,.45);
+  margin-top: 3px;
+  font-family: "Lora", Georgia, serif;
+}
+.sb-nav { padding: 8px 0; flex: 1; }
+.nav-sec {
+  padding: 9px 18px 3px;
+  font-family: "Lora", Georgia, serif;
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-top: 4px;
+}
+.nav-a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  font-family: "Lora", Georgia, serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,.5);
+  transition: all .15s;
+}
+.nav-a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-a.active {
+  background: rgba(227, 181, 5,.12);
+  color: #E3B505;
+  border-left-color: #E3B505;
+}
+.nn {
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  min-width: 22px;
+  color: rgba(255,255,255,.28);
+}
+.nav-a.active .nn { color: #E3B505; }
+.ck {
+  margin-left: auto;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid rgba(255,255,255,.18);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: transparent;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.ck.done { background: #17365E; border-color: #17365E; color: #fff; }
+.prog-wrap {
+  padding: 12px 18px 16px;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+.prog-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  color: rgba(255,255,255,.38);
+  margin-bottom: 6px;
+}
+.prog-track { height: 3px; background: rgba(255,255,255,.1); border-radius: 0; overflow: hidden; }
+.prog-fill { height: 100%; background: #E3B505; border-radius: 0; transition: width .4s ease; }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  margin-left: 272px;
+  overflow-y: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── HERO ── */
+.hero {
+  background: #17365E;
+  padding: 52px 56px 44px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: -80px; right: -60px;
+  width: 340px; height: 340px;
+  background: radial-gradient(circle, rgba(227, 181, 5,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-ey {
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #E3B505;
+  margin-bottom: 13px;
+}
+.hero-h1 {
+  font-family: "Lora", Georgia, serif;
+  font-size: clamp(24px, 3.2vw, 38px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  max-width: 600px;
+  margin-bottom: 14px;
+}
+.hero-h1 em { color: #E3B505; font-style: normal; }
+.hero-p {
+  max-width: 540px;
+  color: rgba(255,255,255,.68);
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 26px;
+}
+.pills { display: flex; gap: 18px; flex-wrap: wrap; }
+.pill { display: flex; align-items: center; gap: 6px; font-family: "Lora", Georgia, serif; font-size: 12px; color: rgba(255,255,255,.55); }
+.pill-d { width: 7px; height: 7px; border-radius: 50%; }
+
+/* ── SECTIONS ── */
+.sec { display: none; padding: 0 56px 80px; max-width: 900px; }
+.sec.vis { display: block; animation: fu .25s ease; }
+@keyframes fu { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.sh { padding: 34px 0 22px; border-bottom: 1px solid #E4E2DA; margin-bottom: 28px; }
+.sl {
+  font-family: "Lora", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #17365E;
+  margin-bottom: 5px;
+}
+.sh h2 { font-family: "Lora", Georgia, serif; font-size: 24px; font-weight: 700; line-height: 1.2; }
+.sh p { margin-top: 7px; color: #5C6270; font-size: 13px; font-style: italic; }
+
+/* ── VIDEO ── */
+.vw { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; overflow: hidden; margin-bottom: 8px; }
+.vph {
+  aspect-ratio: 16/9;
+  background: #17365E;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 13px; position: relative; cursor: pointer;
+}
+.pr {
+  width: 58px; height: 58px;
+  border: 2px solid rgba(227, 181, 5,.45);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .2s;
+}
+.vph:hover .pr { border-color: #E3B505; }
+.pt { width: 0; height: 0; border-style: solid; border-width: 9px 0 9px 16px; border-color: transparent transparent transparent #E3B505; margin-left: 3px; }
+.vph .pl { font-family: "Lora", Georgia, serif; font-size: 12px; color: rgba(255,255,255,.4); }
+.vph .pd { position: absolute; bottom: 13px; right: 13px; font-family: "Lora", Georgia, serif; font-size: 10px; color: rgba(255,255,255,.38); background: rgba(0,0,0,.3); padding: 2px 7px; border-radius: 0; }
+.vf { padding: 9px 15px; display: flex; align-items: center; gap: 10px; border-top: 1px solid #E4E2DA; }
+.vft { font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 600; flex: 1; }
+.vtg { font-family: "Lora", Georgia, serif; font-size: 9px; padding: 2px 7px; border-radius: 0; background: #F4F2EB; color: #17365E; border: 1px solid #E4E2DA; }
+
+/* ── DOWNLOAD BTN ── */
+.dlb {
+  display: inline-flex; align-items: center; gap: 7px; margin-bottom: 22px;
+  background: #fff; border: 1px solid #E4E2DA; border-radius: 0;
+  padding: 7px 15px; font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 600;
+  color: #17365E; cursor: pointer; transition: all .15s; text-decoration: none;
+}
+.dlb:hover { border-color: #17365E; background: #F4F2EB; }
+.dlb svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ── TABS ── */
+.tbr { display: flex; gap: 4px; background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 3px; width: fit-content; margin-bottom: 13px; }
+.tbb { font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 600; padding: 5px 15px; border: none; background: transparent; color: #5C6270; border-radius: 0; cursor: pointer; transition: all .15s; }
+.tbb.on { background: #17365E; color: #fff; }
+.tbp { display: none; background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 18px 22px; font-size: 14.5px; line-height: 1.85; color: #3A4152; }
+.tbp.on { display: block; animation: fu .2s ease; }
+.tbp p + p { margin-top: 11px; }
+.tbp strong { color: #17365E; }
+.tbp em { color: #17365E; font-style: normal; font-weight: 600; }
+
+/* ── CALLOUTS ── */
+.co { border-left: 3px solid #17365E; padding: 13px 17px; background: #F4F2EB; border-radius: 0; margin: 18px 0; font-size: 14px; color: #3A4152; }
+.co.y { border-left-color: #E3B505; background: #FBF4DB; }
+.co.r { border-left-color: #9C3B2E; background: #FAF2F0; }
+.co.g { border-left-color: #17365E; background: #EFF2F7; }
+.co-t { font-family: "Lora", Georgia, serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #17365E; margin-bottom: 5px; }
+.co.y .co-t { color: #8A6A00; }
+.co.r .co-t { color: #9C3B2E; }
+.co.g .co-t { color: #17365E; }
+
+/* ── LOGIC BOX ── */
+.lb { background: #F4F2EB; border: 1px solid #E4E2DA; border-radius: 0; padding: 13px 17px; margin: 13px 0; font-family: "Lora", Georgia, serif; font-size: 13px; color: #101A2C; overflow-x: auto; line-height: 1.9; }
+.lb .s { color: #17365E; font-weight: 500; }
+.lb .k { color: #17365E; font-weight: 600; }
+.lb .n { color: #5C6270; font-style: italic; font-family: "Spectral", Georgia, serif; font-size: 12px; }
+
+/* ── TRUTH TABLE ── */
+.ttw { overflow-x: auto; margin: 13px 0; }
+.tt { border-collapse: collapse; font-family: "Lora", Georgia, serif; font-size: 13px; }
+.tt th { background: #17365E; color: #E3B505; padding: 7px 14px; text-align: center; border: 1px solid #2A4A78; font-size: 11px; font-weight: 600; letter-spacing: .04em; }
+.tt td { padding: 6px 14px; text-align: center; border: 1px solid #E4E2DA; background: #fff; }
+.tt tr:nth-child(even) td { background: #FCFCFB; }
+.tt td.T { color: #17365E; font-weight: 600; }
+.tt td.F { color: #9C3B2E; font-weight: 600; }
+.tt td.H { background: #F4F2EB; font-weight: 700; color: #17365E; }
+
+/* ── BIBLIO ── */
+.bib { background: #F4F2EB; border: 1px solid #E4E2DA; border-radius: 0; padding: 13px 17px; margin: 18px 0; }
+.bib-t { font-family: "Lora", Georgia, serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #17365E; margin-bottom: 5px; }
+.bib-b { font-size: 13px; color: #5C6270; line-height: 1.7; font-family: "Lora", Georgia, serif; }
+.bib-b strong { color: #17365E; font-weight: 600; }
+
+/* ── QUICK CHECKS ── */
+.qw { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 18px 20px; margin: 24px 0; }
+.qt { font-family: "Lora", Georgia, serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #5C6270; margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
+.qt::before { content: ""; display: block; width: 18px; height: 2px; background: #E3B505; border-radius: 0; }
+.qi { display: flex; gap: 9px; padding: 9px 13px; border: 1px solid #E4E2DA; border-radius: 0; cursor: pointer; transition: all .15s; font-size: 13.5px; align-items: flex-start; margin-bottom: 8px; }
+.qi:last-of-type { margin-bottom: 0; }
+.qi:hover { border-color: #17365E; background: #F4F2EB; }
+.qi.ok { border-color: #17365E; background: #EFF2F7; pointer-events: none; }
+.qi.no { border-color: #9C3B2E; background: #FAF2F0; pointer-events: none; }
+.qi.done { pointer-events: none; opacity: .82; }
+.ql { font-family: "Lora", Georgia, serif; font-size: 11px; color: #5C6270; min-width: 17px; margin-top: 1px; flex-shrink: 0; }
+.qfb { font-size: 12.5px; padding: 8px 12px; border-radius: 0; margin-top: 8px; display: none; font-family: "Lora", Georgia, serif; }
+.qfb.show { display: block; animation: fu .2s ease; }
+.qfb.ok { background: #EFF2F7; color: #17365E; border: 1px solid #C3CEDE; }
+.qfb.no { background: #FAF2F0; color: #9C3B2E; border: 1px solid #E6C4BE; }
+
+/* ── COMPLETE BTN ── */
+.cb { display: flex; align-items: center; gap: 8px; margin-top: 34px; background: transparent; border: 1.5px solid #E4E2DA; border-radius: 0; padding: 10px 20px; font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 600; color: #5C6270; cursor: pointer; transition: all .2s; }
+.cb:hover { border-color: #17365E; color: #17365E; }
+.cb.done { border-color: #17365E; color: #17365E; background: #EFF2F7; }
+
+/* ── EXERCISES ── */
+.sc-bar { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 14px 20px; margin-bottom: 22px; display: flex; align-items: center; gap: 18px; }
+.sc-ring { width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#17365E 0%, #E4E2DA 0%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .4s; }
+.sc-in { width: 46px; height: 46px; border-radius: 50%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.sc-pct { font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 700; color: #17365E; line-height: 1; }
+.sc-l { font-family: "Lora", Georgia, serif; font-size: 9px; color: #5C6270; }
+.sc-txt { flex: 1; }
+.sc-h { font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 700; color: #17365E; }
+.sc-d { font-size: 12px; color: #5C6270; font-family: "Lora", Georgia, serif; margin-top: 2px; }
+
+.ec { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; margin-bottom: 13px; overflow: hidden; }
+.eh { display: flex; align-items: flex-start; gap: 11px; padding: 13px 17px; cursor: pointer; transition: background .15s; }
+.eh:hover { background: #FCFCFB; }
+.en { font-family: "Lora", Georgia, serif; font-size: 10px; color: #17365E; background: #F4F2EB; border: 1px solid #E4E2DA; padding: 2px 7px; border-radius: 0; flex-shrink: 0; margin-top: 1px; }
+.et { font-family: "Lora", Georgia, serif; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: #5C6270; background: #FCFCFB; border: 1px solid #E4E2DA; padding: 2px 6px; border-radius: 0; flex-shrink: 0; margin-top: 2px; }
+.eq { font-size: 14px; flex: 1; line-height: 1.6; }
+.ea { color: #5C6270; transition: transform .2s; font-size: 11px; margin-top: 3px; flex-shrink: 0; }
+.ec.op .ea { transform: rotate(180deg); }
+.eb { display: none; padding: 0 17px 14px; border-top: 1px solid #E4E2DA; }
+.ec.op .eb { display: block; animation: fu .2s ease; }
+
+.mo { display: flex; flex-direction: column; gap: 7px; margin: 13px 0 5px; }
+.mi { display: flex; align-items: flex-start; gap: 9px; padding: 8px 12px; border: 1px solid #E4E2DA; border-radius: 0; cursor: pointer; transition: all .15s; font-size: 13.5px; }
+.mi:hover { border-color: #17365E; background: #F4F2EB; }
+.mi.ok { border-color: #17365E; background: #EFF2F7; pointer-events: none; }
+.mi.no { border-color: #9C3B2E; background: #FAF2F0; pointer-events: none; }
+.mi.done { pointer-events: none; }
+.ml { font-family: "Lora", Georgia, serif; font-size: 11px; color: #5C6270; min-width: 17px; flex-shrink: 0; margin-top: 1px; }
+.mf { font-size: 12.5px; padding: 8px 11px; border-radius: 0; display: none; font-family: "Lora", Georgia, serif; margin-top: 4px; }
+.mf.show.ok { display: block; background: #EFF2F7; color: #17365E; border: 1px solid #C3CEDE; animation: fu .2s ease; }
+.mf.show.no { display: block; background: #FAF2F0; color: #9C3B2E; border: 1px solid #E6C4BE; animation: fu .2s ease; }
+
+.vo { display: flex; gap: 9px; margin: 13px 0 5px; }
+.vi { flex: 1; padding: 9px; border: 1px solid #E4E2DA; border-radius: 0; cursor: pointer; text-align: center; font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 600; transition: all .15s; }
+.vi:hover { border-color: #17365E; background: #F4F2EB; }
+.vi.ok { border-color: #17365E; background: #EFF2F7; pointer-events: none; }
+.vi.no { border-color: #9C3B2E; background: #FAF2F0; pointer-events: none; }
+
+.txw { margin: 13px 0 5px; }
+.txi { width: 100%; background: #FCFCFB; border: 1px solid #E4E2DA; border-radius: 0; padding: 8px 13px; font-family: "Lora", Georgia, serif; font-size: 13px; color: #101A2C; transition: border-color .15s; outline: none; }
+.txi:focus { border-color: #17365E; }
+.txi.ok { border-color: #17365E; background: #EFF2F7; }
+.txi.no { border-color: #9C3B2E; background: #FAF2F0; }
+
+.br { display: flex; gap: 7px; margin-top: 9px; flex-wrap: wrap; }
+.ckb { background: #17365E; color: #fff; border: none; padding: 7px 16px; border-radius: 0; font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity .15s; }
+.ckb:hover { opacity: .87; }
+.hb { background: transparent; border: 1px solid #E4E2DA; color: #5C6270; padding: 7px 13px; border-radius: 0; font-family: "Lora", Georgia, serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s; }
+.hb:hover { border-color: #17365E; color: #17365E; }
+.hx { background: #FBF4DB; border: 1px solid #E3B505; border-radius: 0; padding: 8px 11px; font-size: 12.5px; color: #8A6A00; font-family: "Lora", Georgia, serif; margin-top: 7px; display: none; }
+.hx.show { display: block; animation: fu .2s ease; }
+
+.tts { background: #FCFCFB; border: 1px solid #E4E2DA; color: #101A2C; padding: 3px 7px; border-radius: 0; font-family: "Lora", Georgia, serif; font-size: 12px; cursor: pointer; outline: none; transition: border-color .15s; }
+.tts:focus { border-color: #17365E; }
+.tts.ok { border-color: #17365E; color: #17365E; }
+.tts.no { border-color: #9C3B2E; color: #9C3B2E; }
+.ttf { font-size: 13px; display: none; margin-top: 7px; padding: 8px 12px; border-radius: 0; font-family: "Lora", Georgia, serif; }
+.ttf.show.ok { display: block; background: #EFF2F7; color: #17365E; border: 1px solid #C3CEDE; animation: fu .2s ease; }
+.ttf.show.no { display: block; background: #FAF2F0; color: #9C3B2E; border: 1px solid #E6C4BE; animation: fu .2s ease; }
+
+/* ── DOUBT BTN ── */
+.db { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; background: #fff; border: 1.5px solid #E4E2DA; border-radius: 0; padding: 8px 17px; font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 600; color: #17365E; cursor: pointer; transition: all .15s; }
+.db:hover { border-color: #17365E; background: #F4F2EB; }
+
+/* ── MODAL ── */
+.ov { position: fixed; inset: 0; background: rgba(20,35,70,.55); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+.ov.open { display: flex; }
+.md { background: #fff; border-radius: 0; padding: 26px 26px 20px; max-width: 620px; width: 100%; box-shadow: none; }
+.mdh { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.mdt { font-family: "Lora", Georgia, serif; font-size: 15px; font-weight: 700; color: #17365E; }
+.mdc { background: none; border: none; font-size: 20px; color: #5C6270; cursor: pointer; }
+.mdb { font-size: 13px; color: #5C6270; margin-bottom: 12px; line-height: 1.7; font-family: "Lora", Georgia, serif; }
+.mdp { background: #FCFCFB; border: 1px solid #E4E2DA; border-radius: 0; padding: 14px; font-family: "Lora", Georgia, serif; font-size: 12px; line-height: 1.7; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-bottom: 13px; }
+.cpb { background: #17365E; color: #fff; border: none; padding: 8px 20px; border-radius: 0; font-family: "Lora", Georgia, serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity .15s; }
+.cpb:hover { opacity: .87; }
+.cpb.copied { background: #17365E; }
+
+/* ── OVERVIEW GRID ── */
+.og { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px; margin: 20px 0; }
+.oc { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 18px 20px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden; }
+.oc::before { content: ""; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: #17365E; opacity: 0; transition: opacity .2s; }
+.oc:hover { border-color: #17365E; transform: translateY(-1px); box-shadow: none; }
+.oc:hover::before { opacity: 1; }
+.on { font-family: "Lora", Georgia, serif; font-size: 10px; color: #5C6270; margin-bottom: 5px; }
+.oh { font-family: "Lora", Georgia, serif; font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #17365E; }
+.od { font-size: 12.5px; color: #5C6270; line-height: 1.6; font-family: "Lora", Georgia, serif; }
+.ob { font-family: "Lora", Georgia, serif; font-size: 10px; color: #5C6270; margin-top: 8px; }
+
+/* ── CREDITS ── */
+.crd { background: #fff; border: 1px solid #E4E2DA; border-radius: 0; padding: 22px 24px; margin-bottom: 18px; }
+.crd p { font-size: 14.5px; line-height: 1.85; color: #3A4152; margin-bottom: 11px; }
+.crd p:last-child { margin-bottom: 0; }
+
+/* ── MOBILE ── */
+.mob { display: none; position: fixed; bottom: 20px; right: 20px; width: 44px; height: 44px; background: #17365E; color: #fff; border: none; border-radius: 50%; font-size: 18px; cursor: pointer; z-index: 100; box-shadow: none; align-items: center; justify-content: center; }
+
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); transition: transform .25s ease; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .mob { display: flex; }
+  .hero { padding: 34px 20px 28px; }
+  .sec { padding: 0 20px 60px; }
+  .og { grid-template-columns: 1fr; }
+}
+
+
+/* ══════════ Direção A · Compêndio ══════════ */
+
+/* variáveis usadas na marcação mas nunca declaradas no arquivo original */
+:root {
+  --yellow: #E3B505; --blue: #17365E; --success: #17365E;
+  --muted: #5C6270; --border: #E4E2DA; --fh: "Lora", Georgia, serif;
+}
+
+/* ── tipografia: exatamente a dos slides ── */
+body, p, li, td, th, input, button, textarea { font-family: "Spectral", Georgia, serif; }
+h1, h2, h3, h4, .hero-h1, .sb-title, .mdh { font-family: "Lora", Georgia, serif; font-weight: 600; letter-spacing: -0.005em; }
+.nav-a, .sb-sub { font-family: "Spectral", Georgia, serif; }
+.badge, .nav-sec, .hero-ey, .pill, .eh, .bib-t, .mdt, .sc-l, .sl, .qt, .co-t,
+.et, .vtg, .ql, .en, .ml, .on, .ob, .prog-meta, .dlb, .tbb, .tts, .vf, .vft, .pd
+  { font-family: "Lora", Georgia, serif; }
+.lb, .mdp, .txi { font-family: "JetBrains Mono", Consolas, monospace !important; }
+
+/* ── nada de sombra ── */
+* { box-shadow: none !important; }
+
+/* ── mais ar: o Compêndio respira ── */
+.sec { padding: 0 56px 96px; max-width: 880px; }
+.sh { padding: 44px 0 20px; border-bottom: 1px solid #E4E2DA; margin-bottom: 34px; }
+.sl { color: #8A6A00; letter-spacing: 0.18em; }
+
+/* ── cartões deixam de ser caixas: fio em cima, sem moldura ── */
+.crd { background: transparent !important; border: none !important;
+       border-top: 1px solid #E4E2DA !important; padding: 22px 0 10px; margin-bottom: 6px; }
+
+/* ── destaques: painel plano, sem barra lateral ── */
+.co { border: none !important; border-left: none !important;
+      background: #F4F2EB; padding: 18px 22px; margin: 22px 0; }
+.co.y { background: #FBF4DB; }
+.co.r { background: #FAF2F0; }
+.co.g { background: #EFF2F7; }
+.co-t { color: #8A6A00; letter-spacing: 0.16em; font-size: 10.5px; }
+.bib { background: transparent !important; border: none !important; border-top: 1px solid #E4E2DA !important; padding: 14px 0 4px; }
+.bib-t { color: #8A6A00; letter-spacing: 0.16em; }
+
+/* ── verificações rápidas: linhas com fio, não caixa dentro de caixa ── */
+.qw { background: transparent !important; border: none !important;
+      border-top: 1px solid #E4E2DA !important; padding: 22px 0 4px; margin: 32px 0 0; }
+.qt { color: #8A6A00; letter-spacing: 0.16em; }
+.qi { border: none !important; border-bottom: 1px solid #EFEDE6;
+      padding: 13px 4px; margin-bottom: 0; font-size: 15px; }
+.qi:last-child { border-bottom: none; }
+.qi:hover { background: #F7F5EF; }
+.ql { color: #8A6A00; font-size: 10.5px; letter-spacing: 0.1em; }
+
+/* ── exercícios: mesma lógica ── */
+.ec { background: transparent !important; border: none !important;
+      border-top: 1px solid #E4E2DA !important; margin-bottom: 0; }
+.eh { padding: 17px 2px; }
+.eb { border-top: none; padding: 0 2px 22px; }
+
+/* ── botão de download: fio ocre, sem preenchimento ── */
+.dlb { background: transparent !important; border: 1px solid #E3B505 !important;
+       color: #17365E; padding: 9px 16px; }
+.dlb:hover { background: #FBF4DB !important; }
+
+/* ── alternadores ── */
+.tbr { background: transparent !important; border: 1px solid #E4E2DA !important; }
+.tbp { font-size: 15.5px !important; line-height: 1.72 !important; color: #3A4152;
+       border: none !important; background: #F4F2EB; padding: 18px 22px; }
+
+/* ── tabelas verdade: sem grade, sem preenchimento ── */
+.tt { border-collapse: collapse; width: auto; }
+.tt th { background: transparent !important; color: #17365E !important; border: none !important;
+         border-bottom: 2px solid #17365E !important; font-family: "Lora", Georgia, serif;
+         font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+         padding: 4px 18px 9px; text-align: center; }
+.tt td { background: transparent !important; border: none !important;
+         border-bottom: 1px solid #E4E2DA !important; font-family: "Spectral", Georgia, serif;
+         font-size: 16px; padding: 9px 18px; text-align: center; }
+.tt td.T { color: #17365E !important; }
+.tt td.F { color: #8A6A00 !important; }
+.tt td.H, .tt th.H { background: #FBF4DB !important; font-weight: 600; }
+.tt tr:last-child td { border-bottom: none !important; }
+
+/* ── notação alinhada continua monoespaçada ── */
+.lb { font-size: 13.5px; line-height: 1.8; background: #F4F2EB; border: none !important; padding: 18px 22px; }
+.mdp { background: #F4F2EB; border: none !important; }
+
+.prog-fill { background: #E3B505; }
+a { text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+/* ══ Glossário ══ */
+.gl-sub { font-size: 15px; color: #5C6270; font-style: italic; margin-bottom: 18px; }
+.gl-intro { font-size: 15.5px; line-height: 1.7; color: #3A4152; background: #F4F2EB; padding: 16px 20px; margin-bottom: 34px; }
+.gl-grp { margin-bottom: 38px; }
+.gl-t { font-family: "Lora", Georgia, serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+        text-transform: uppercase; color: #8A6A00; margin-bottom: 10px; }
+table.gl { width: 100%; border-collapse: collapse; }
+table.gl th { font-family: "Lora", Georgia, serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+              text-transform: uppercase; color: #17365E; text-align: left;
+              border-bottom: 2px solid #17365E; background: transparent; padding: 0 12px 8px; }
+table.gl th.gl-hs { text-align: center; width: 96px; }
+table.gl th.gl-ha { text-align: right; width: 86px; }
+table.gl th:nth-child(2) { width: 178px; }
+table.gl th:nth-child(3) { width: 172px; }
+table.gl td { border-bottom: 1px solid #E4E2DA; background: transparent; padding: 13px 12px; vertical-align: top; }
+table.gl tr:last-child td { border-bottom: none; }
+.gl-s { font-family: "Spectral", Georgia, serif; font-size: 21px; color: #17365E; text-align: center; white-space: nowrap; }
+.gl-n { font-size: 14.5px; color: #101A2C; font-weight: 600; white-space: nowrap; }
+.gl-l { font-size: 14px; color: #5C6270; font-style: italic; }
+.gl-d { font-size: 14.5px; line-height: 1.6; color: #3A4152; }
+.gl-a { text-align: right; white-space: nowrap; }
+.gl-tag { font-family: "Lora", Georgia, serif; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+          color: #8A6A00; border: 1px solid #E8DCA8; background: #FBF4DB; padding: 3px 7px; }
+@media (max-width: 900px) {
+  table.gl, table.gl tbody, table.gl tr, table.gl td { display: block; width: 100%; }
+  table.gl thead { display: none; }
+  table.gl tr { border-bottom: 1px solid #E4E2DA; padding: 12px 0; }
+  table.gl td { border: none; padding: 2px 0; }
+  .gl-s { text-align: left; font-size: 24px; }
+  .gl-a { text-align: left; margin-top: 6px; }
+}
+
+/* ── vídeo publicado ── */
+.vemb { aspect-ratio: 16/9; background: #17365E; }
+.vemb iframe { width: 100%; height: 100%; border: 0; display: block; }
+.vw { background: transparent !important; border: none !important; }
+.vf { border-top: 1px solid #E4E2DA; padding: 10px 2px; }
+</style>
+</head> </head>
+<body>
+<div class="shell"> <!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar"> <div class="sb-head"> <div class="badge">Módulo 1</div> <div class="sb-title">Lógica e Linguagem Matemática</div> <div class="sb-sub">FGV EESP · Matemática I</div> </div> <nav class="sb-nav"> <div class="nav-sec">Créditos</div> <a class="nav-a" onclick="show('disc')" href="#"><span class="nn"></span>Sobre este Material<span class="ck done" id="ck-disc">✓</span></a> <div class="nav-sec">Apresentação</div> <a class="nav-a active" onclick="show('ov')" href="#"><span class="nn">00</span>Visão Geral<span class="ck done" id="ck-ov">✓</span></a> <div class="nav-sec">Aula 1 — Proposições</div> <a class="nav-a" onclick="show('a1')" href="#"><span class="nn">01</span>O que é uma Proposição?<span class="ck" id="ck-a1"></span></a> <a class="nav-a" onclick="show('a2')" href="#"><span class="nn">02</span>Negação e Conjunção<span class="ck" id="ck-a2"></span></a> <a class="nav-a" onclick="show('a3')" href="#"><span class="nn">03</span>Disjunção<span class="ck" id="ck-a3"></span></a> <div class="nav-sec">Aula 2 — Implicação</div> <a class="nav-a" onclick="show('a4')" href="#"><span class="nn">04</span>Implicação e Equivalência<span class="ck" id="ck-a4"></span></a> <a class="nav-a" onclick="show('a5')" href="#"><span class="nn">05</span>A Forma Contrapositiva<span class="ck" id="ck-a5"></span></a> <div class="nav-sec">Aula 3 — Quantificadores</div> <a class="nav-a" onclick="show('a6')" href="#"><span class="nn">06</span>Para Todo e Existe<span class="ck" id="ck-a6"></span></a> <a class="nav-a" onclick="show('a7')" href="#"><span class="nn">07</span>Lógica e Conjuntos<span class="ck" id="ck-a7"></span></a> <div class="nav-sec">Prática</div> <a class="nav-a" onclick="show('ex')" href="#"><span class="nn">EX</span>Exercícios<span class="ck" id="ck-ex"></span></a><a class="nav-a" onclick="show('gl')" href="#"><span class="nn">GL</span>Glossário</a> </nav> <div class="prog-wrap"> <div class="prog-meta"><span>Progresso</span><span id="pp">22%</span></div> <div class="prog-track"><div class="prog-fill" id="pf" style="width:22%"></div></div> </div>
+</aside> <!-- MAIN -->
+<main class="main" id="main"> <!-- HERO -->
+<header class="hero"> <div class="hero-ey">FGV EESP · Matemática I · Módulo de Apoio</div> <h1 class="hero-h1">Lógica e <em>Linguagem</em> Matemática</h1> <p class="hero-p">Da proposição simples aos quantificadores — os fundamentos formais que sustentam toda a matemática do curso.</p> <div class="pills"> <div class="pill"><div class="pill-d" style="background:var(--yellow)"></div>7 aulas · ~45 min</div> <div class="pill"><div class="pill-d" style="background:#E3B505"></div>Exercícios interativos</div> <div class="pill"><div class="pill-d" style="background:#C3CEDE"></div>Slides para download</div> </div>
+</header> <!-- ═══ DISCLAIMER ═══ -->
+<section class="sec" id="sec-disc"> <div class="sh"><div class="sl">Sobre este Material</div><h2>Créditos e Disclaimer</h2></div> <div class="crd"> <p><strong>Este material foi integralmente construído com o uso de Inteligência Artificial</strong> — em especial as ferramentas <strong>Claude AI</strong> (Anthropic) e <strong>HeyGen</strong> — e passou por supervisão e validação de professores da <strong>FGV EESP</strong>. Os conteúdos, exemplos e exercícios refletem insumos pedagógicos fornecidos pelos docentes listados abaixo.</p> <p><strong>Organização pedagógica:</strong> Prof. Raone Costa.<br> <strong>Execução:</strong> Profa. Gabriela Fonseca e Prof. Caio Castro.<br> <strong>Colaborações:</strong> Profa. Katia Nishiyama, Prof. Roberto Sarkisian, Prof. Pedro Ogeda e Profa. Verônica Orellano.</p> <p><strong>Base bibliográfica:</strong><br> • <em>forallx: An Introduction to Formal Logic</em>, P.D. Magnus — disponível gratuitamente em <a href="https://www.fecundity.com/codex/forallx.pdf" target="_blank" style="color:#17365E">fecundity.com/codex/forallx.pdf</a><br> • <em>Book of Proof</em> (3ª ed.), Richard Hammack — disponível gratuitamente em <a href="https://www.people.vcu.edu/~rhammack/BookOfProof/BookOfProof.pdf" target="_blank" style="color:#17365E">people.vcu.edu/~rhammack/BookOfProof</a><br> • Slides de aula do Prof. Ricardo Masini (FGV EESP)</p> <p><strong>Sua opinião importa.</strong> Se você encontrar erros, imprecisões ou tiver sugestões de melhoria, por favor envie seu feedback diretamente aos tutores ou professores responsáveis pela disciplina. Este é um material em construção e sua contribuição é muito bem-vinda.</p> </div>
+</section> <!-- ═══ VISÃO GERAL ═══ -->
+<section class="sec vis" id="sec-ov"> <div class="sh"><div class="sl">Introdução · 00</div><h2>O que você vai aprender</h2><p>Uma visão do módulo e por que lógica importa para o economista</p></div> <div class="co y" style="margin-bottom:18px"> <div class="co-t"> Bibliografia Base</div> O material se baseia no livro <strong>forallx — An Introduction to Formal Logic</strong> (P.D. Magnus), de acesso livre. Recomendamos os Caps. 1–5 como leitura complementar.<br> <a class="dlb" href="https://www.fecundity.com/codex/forallx.pdf" target="_blank"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Baixar livro forallx (Magnus) — PDF gratuito
+    </a> </div> <div class="tbr" data-group="ov"> <button class="tbb on" data-tab="ovr">Rápido</button> <button class="tbb" data-tab="ovc">Completo</button> </div> <div class="tbp on" id="ovr"> <p>Economistas usam lógica o tempo todo — só que raramente percebem. "Se a inflação cai, os juros tendem a cair" é uma <em>implicação</em>. "Existe um preço de equilíbrio" usa um <em>quantificador existencial</em>. Este módulo dá nome e precisão formal a essas ideias.</p> <p>Ao final, você conseguirá ler definições matemáticas rigorosas — como a definição de limite — sem se perder na notação.</p> </div> <div class="tbp" id="ovc"> <p>A matemática moderna é escrita em lógica de predicados. Todo teorema tem a forma <strong>P → Q</strong>. Entender essa estrutura é o primeiro passo para ler e construir demonstrações.</p> <p>A definição formal de limite usa os quantificadores <strong>∀</strong> e <strong>∃</strong> aninhados com implicações. Sem a lógica por baixo, essa definição parece um enigma. Com ela, é uma sentença precisa e elegante.</p> <p>O módulo percorre a lógica proposicional (conectivos: ¬, ∧, ∨, →, ↔) e depois sobe para lógica de predicados (∀, ∃), encerrando com a conexão entre lógica e teoria dos conjuntos.</p> </div> <div class="og"> <div class="oc" onclick="show('a1')"><div class="on">Aulas 01–03</div><div class="oh">Conectivos Básicos</div><div class="od">¬, ∧, ∨ — negação, conjunção e disjunção. A base de toda a linguagem.</div><div class="ob"> ~16 min</div></div> <div class="oc" onclick="show('a4')"><div class="on">Aulas 04–05</div><div class="oh">Implicação</div><div class="od">P → Q e sua forma contrapositiva ¬Q → ¬P — o conectivo central da matemática.</div><div class="ob"> ~14 min</div></div> <div class="oc" onclick="show('a6')"><div class="on">Aulas 06–07</div><div class="oh">Quantificadores</div><div class="od">∀ e ∃ aplicados a conjuntos numéricos e à definição de limite.</div><div class="ob"> ~13 min</div></div> <div class="oc" onclick="show('ex')"><div class="on">Exercícios</div><div class="oh">Prática Interativa</div><div class="od">Múltipla escolha, V/F, resposta livre e tabelas verdade. Com pontuação.</div><div class="ob"> ~15 min</div></div> </div> <button class="cb done" onclick="markDone('ov',this)">✓ Marcar como lido</button>
+</section> <!-- ═══ AULA 1 ═══ -->
+<section class="sec" id="sec-a1"> <div class="sh"><div class="sl">Aula 01</div><h2>O que é uma Proposição?</h2><p>A unidade básica da linguagem lógico-matemática</p></div> <div class="vw"><div class="vemb"><iframe src="https://www.youtube-nocookie.com/embed/22iOGsc0eQg" title="Módulo 1 — Aula 01" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="vf"><span class="vft">Proposições e Lógica Sentencial</span><span class="vtg">AULA 01</span></div></div> <a class="dlb" href="slides/Modulo1_Aula01_Proposicoes_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a1"><button class="tbb on" data-tab="a1c">Conceitual</button><button class="tbb" data-tab="a1f">Formal</button></div> <div class="tbp on" id="a1c"> <p>Lógica é o estudo da <em>argumentação</em>. O foco está na validade estrutural, não na veracidade das premissas. Um argumento pode partir de premissas absurdas e ainda assim ser logicamente perfeito.</p> <p>Uma <em>proposição</em> é qualquer sentença que pode ser classificada como verdadeira (V) ou falsa (F). Exclamações e perguntas não têm valor de verdade — portanto não são proposições.</p> <p>Em economia: "A inflação está acima da meta" é uma proposição. "Que taxa absurda!" não é. A precisão matemática começa aqui.</p> </div> <div class="tbp" id="a1f"> <p>A <strong>Lógica Proposicional</strong> estuda proposições cujo valor pertence a {V, F} e como o valor de proposições compostas é determinado pelo valor dos átomos e pela estrutura dos conectivos. Com <em>n</em> átomos distintos, a tabela verdade tem 2<sup>n</sup> linhas.</p> <p>A lógica proposicional é expressiva para argumentos finitos, mas tem limites: não consegue capturar afirmações como "todo número par é divisível por 2". Para isso, precisamos da lógica de predicados (Aulas 06–07).</p> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>forallx (Magnus):</strong> Caps. 1–2 (pp. 1–18) — Introdução à lógica, sentenças e forma lógica.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div><div class="qi" onclick="qc(this,true,'q1a')"><span class="ql">A</span>"2 + 2 = 5" é uma proposição lógica (mesmo sendo falsa).</div><div class="qi" onclick="qc(this,false,'q1a')"><span class="ql">B</span>"2 + 2 = 5" não é proposição porque é falsa.</div><div class="qi" onclick="qc(this,false,'q1a')"><span class="ql">C</span>Somente afirmações verdadeiras são proposições.</div><div class="qfb" id="q1a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2: qual NÃO é proposição?</div><div class="qi" onclick="qc(this,false,'q1b')"><span class="ql">A</span>"Dragões existem."</div><div class="qi" onclick="qc(this,false,'q1b')"><span class="ql">B</span>"A taxa Selic é 10,5% ao ano."</div><div class="qi" onclick="qc(this,true,'q1b')"><span class="ql">C</span>"Feche a porta!" — imperativo, sem valor de verdade.</div><div class="qfb" id="q1b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3</div><div class="qi" onclick="qc(this,true,'q1c')"><span class="ql">A</span>"Esse é um bom governo" é uma proposição — tem valor de verdade, mesmo que discutível.</div><div class="qi" onclick="qc(this,false,'q1c')"><span class="ql">B</span>Opiniões não são proposições, pois são subjetivas.</div><div class="qi" onclick="qc(this,false,'q1c')"><span class="ql">C</span>É proposição apenas se for verificável empiricamente.</div><div class="qfb" id="q1c"></div></div> <button class="db" onclick="openDoubt('a1')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a1',this)">✓ Marcar Aula 01 como concluída</button>
+</section> <!-- ═══ AULA 2 ═══ -->
+<section class="sec" id="sec-a2"> <div class="sh"><div class="sl">Aula 02</div><h2>Negação e Conjunção</h2><p>¬P e P ∧ Q</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 02 — em breve</div><div class="pd">~6 min</div></div><div class="vf"><span class="vft">Negação (¬) e Conjunção (∧)</span><span class="vtg">AULA 02</span></div></div> <a class="dlb" href="slides/Modulo1_Aula02_Negacao-e-Conjuncao_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a2"><button class="tbb on" data-tab="a2c">Conceitual</button><button class="tbb" data-tab="a2f">Formal</button></div> <div class="tbp on" id="a2c"> <p>A <em>negação</em> (¬P) inverte o valor de verdade. Em linguagem natural aparece disfarçada: "irreparável" = ¬"tem conserto". A dupla negação cancela: <strong>¬¬P ≡ P</strong>.</p> <p>A <em>conjunção</em> (P ∧ Q) é verdadeira somente quando <strong>ambas</strong> as partes são verdadeiras. Em modelos econômicos, as hipóteses funcionam assim: todas precisam valer para a conclusão ser garantida. Palavras como "mas", "porém", "embora" indicam conjunções em linguagem natural.</p> </div> <div class="tbp" id="a2f"> <div class="ttw"><table class="tt"><tr><th>P</th><th>¬P</th><th>¬¬P</th></tr><tr><td class="T">V</td><td class="F">F</td><td class="T">V</td></tr><tr><td class="F">F</td><td class="T">V</td><td class="F">F</td></tr></table></div> <div class="ttw" style="margin-top:16px"><table class="tt"><tr><th>P</th><th>Q</th><th class="H">P ∧ Q</th></tr><tr><td class="T">V</td><td class="T">V</td><td class="T H">V</td></tr><tr><td class="T">V</td><td class="F">F</td><td class="F H">F</td></tr><tr><td class="F">F</td><td class="T">V</td><td class="F H">F</td></tr><tr><td class="F">F</td><td class="F">F</td><td class="F H">F</td></tr></table></div> <p style="margin-top:8px;font-size:14px">A conjunção é <strong>comutativa</strong> (P ∧ Q ≡ Q ∧ P) e <strong>associativa</strong>.</p> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>forallx (Magnus):</strong> Cap. 6 (pp. 33–40) — Negação e conjunção.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div><div class="qi" onclick="qc(this,true,'q2a')"><span class="ql">A</span>"Embora o PIB tenha crescido, o desemprego não caiu" é uma conjunção: P ∧ ¬Q.</div><div class="qi" onclick="qc(this,false,'q2a')"><span class="ql">B</span>É uma implicação: P → ¬Q.</div><div class="qi" onclick="qc(this,false,'q2a')"><span class="ql">C</span>É uma disjunção: P ∨ ¬Q.</div><div class="qfb" id="q2a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2</div><div class="qi" onclick="qc(this,false,'q2b')"><span class="ql">A</span>P ∧ Q é verdadeira quando pelo menos uma é verdadeira.</div><div class="qi" onclick="qc(this,true,'q2b')"><span class="ql">B</span>P ∧ Q é verdadeira somente quando ambas P e Q são verdadeiras.</div><div class="qi" onclick="qc(this,false,'q2b')"><span class="ql">C</span>P ∧ Q é verdadeira quando P é falsa e Q é verdadeira.</div><div class="qfb" id="q2b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3</div><div class="qi" onclick="qc(this,false,'q2c')"><span class="ql">A</span>¬¬P é sempre falsa.</div><div class="qi" onclick="qc(this,true,'q2c')"><span class="ql">B</span>¬¬P ≡ P (dupla negação cancela).</div><div class="qi" onclick="qc(this,false,'q2c')"><span class="ql">C</span>¬¬P é sempre verdadeira.</div><div class="qfb" id="q2c"></div></div> <button class="db" onclick="openDoubt('a2')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a2',this)">✓ Marcar Aula 02 como concluída</button>
+</section> <!-- ═══ AULA 3 ═══ -->
+<section class="sec" id="sec-a3"> <div class="sh"><div class="sl">Aula 03</div><h2>Disjunção</h2><p>P ∨ Q — o "ou" inclusivo e o excludente</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 03 — em breve</div><div class="pd">~4 min</div></div><div class="vf"><span class="vft">Disjunção Inclusiva e Exclusiva</span><span class="vtg">AULA 03</span></div></div> <a class="dlb" href="slides/Modulo1_Aula03_Disjuncao_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a3"><button class="tbb on" data-tab="a3c">Conceitual</button><button class="tbb" data-tab="a3f">Formal</button></div> <div class="tbp on" id="a3c"> <p>O "ou" da lógica é <em>inclusivo</em>: P ∨ Q é verdadeiro se pelo menos um for verdadeiro — incluindo ambos ao mesmo tempo. O único caso falso é quando os dois são falsos.</p> <p>Para o "ou" exclusivo ("um ou outro, não os dois"): <strong>(P ∨ Q) ∧ ¬(P ∧ Q)</strong>. Em matemática pura, o "ou" é sempre o inclusivo, salvo indicação contrária.</p> </div> <div class="tbp" id="a3f"> <div class="ttw"><table class="tt"><tr><th>P</th><th>Q</th><th class="H">P ∨ Q</th></tr><tr><td class="T">V</td><td class="T">V</td><td class="T H">V</td></tr><tr><td class="T">V</td><td class="F">F</td><td class="T H">V</td></tr><tr><td class="F">F</td><td class="T">V</td><td class="T H">V</td></tr><tr><td class="F">F</td><td class="F">F</td><td class="F H">F</td></tr></table></div> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>forallx (Magnus):</strong> Cap. 7 (pp. 41–46) — Disjunção.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div><div class="qi" onclick="qc(this,false,'q3a')"><span class="ql">A</span>P ∨ Q é falsa quando P é falsa.</div><div class="qi" onclick="qc(this,false,'q3a')"><span class="ql">B</span>P ∨ Q é falsa quando Q é falsa.</div><div class="qi" onclick="qc(this,true,'q3a')"><span class="ql">C</span>P ∨ Q é falsa somente quando P e Q são ambas falsas.</div><div class="qfb" id="q3a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2: disjunção exclusiva</div><div class="qi" onclick="qc(this,false,'q3b')"><span class="ql">A</span>P ∨ Q já captura o "ou" exclusivo.</div><div class="qi" onclick="qc(this,true,'q3b')"><span class="ql">B</span>O "ou" exclusivo é (P ∨ Q) ∧ ¬(P ∧ Q).</div><div class="qi" onclick="qc(this,false,'q3b')"><span class="ql">C</span>O "ou" exclusivo é P ∧ ¬Q.</div><div class="qfb" id="q3b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3</div><div class="qi" onclick="qc(this,true,'q3c')"><span class="ql">A</span>Em matemática formal, "ou" significa inclusivo (≥1 verdadeiro), salvo indicação contrária.</div><div class="qi" onclick="qc(this,false,'q3c')"><span class="ql">B</span>Em matemática formal, "ou" sempre significa exclusivo.</div><div class="qi" onclick="qc(this,false,'q3c')"><span class="ql">C</span>O tipo de "ou" é sempre ambíguo em matemática.</div><div class="qfb" id="q3c"></div></div> <button class="db" onclick="openDoubt('a3')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a3',this)">✓ Marcar Aula 03 como concluída</button>
+</section> <!-- ═══ AULA 4 ═══ -->
+<section class="sec" id="sec-a4"> <div class="sh"><div class="sl">Aula 04</div><h2>Implicação e Equivalência</h2><p>P → Q — o conectivo central da matemática</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 04 — em breve</div><div class="pd">~8 min</div></div><div class="vf"><span class="vft">Implicação (→) e Equivalência (↔)</span><span class="vtg">AULA 04</span></div></div> <a class="dlb" href="slides/Modulo1_Aula04_Implicacao-e-Equivalencia_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a4"><button class="tbb on" data-tab="a4c">Conceitual</button><button class="tbb" data-tab="a4f">Formal</button></div> <div class="tbp on" id="a4c"> <p>A <em>implicação</em> P → Q ("se P então Q") é o conectivo mais importante da matemática. É falsa somente quando P é verdadeiro e Q é falso. A intuição: a implicação é uma <strong>promessa</strong> — só é violada quando a condição foi cumprida e a consequência não se materializou.</p> <p>A implicação <strong>não é comutativa</strong>: P → Q e Q → P são proposições diferentes. Confundir as duas é um dos erros mais frequentes em argumentos econômicos.</p> <p>A <em>equivalência</em> P ↔ Q é a implicação em ambas as direções: (P→Q) ∧ (Q→P). Verdadeira quando P e Q têm o mesmo valor.</p> </div> <div class="tbp" id="a4f"> <div class="ttw"><table class="tt"><tr><th>P</th><th>Q</th><th class="H">P → Q</th><th>Q → P</th><th>P ↔ Q</th></tr><tr><td class="T">V</td><td class="T">V</td><td class="T H">V</td><td class="T">V</td><td class="T">V</td></tr><tr><td class="T">V</td><td class="F">F</td><td class="F H">F</td><td class="T">V</td><td class="F">F</td></tr><tr><td class="F">F</td><td class="T">V</td><td class="T H">V</td><td class="F">F</td><td class="F">F</td></tr><tr><td class="F">F</td><td class="F">F</td><td class="T H">V</td><td class="T">V</td><td class="T">V</td></tr></table></div> </div> <div class="co r"><div class="co-t"> Erro Clássico</div>P→Q e Q→P têm tabelas verdade diferentes. "Se há crescimento, há emprego" ≠ "Se há emprego, há crescimento".</div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>forallx (Magnus):</strong> Cap. 8 (pp. 47–56) — Condicionais e bicondicional.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div><div class="qi" onclick="qc(this,false,'q4a')"><span class="ql">A</span>P → Q é falsa quando P é falsa.</div><div class="qi" onclick="qc(this,false,'q4a')"><span class="ql">B</span>P → Q é falsa quando Q é falsa.</div><div class="qi" onclick="qc(this,true,'q4a')"><span class="ql">C</span>P → Q é falsa somente quando P é verdadeira e Q é falsa.</div><div class="qfb" id="q4a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2</div><div class="qi" onclick="qc(this,true,'q4b')"><span class="ql">A</span>Q → P (conversa) é uma proposição DIFERENTE de P → Q.</div><div class="qi" onclick="qc(this,false,'q4b')"><span class="ql">B</span>Q → P é equivalente a P → Q.</div><div class="qi" onclick="qc(this,false,'q4b')"><span class="ql">C</span>Q → P difere de P → Q apenas quando ambas são falsas.</div><div class="qfb" id="q4b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3</div><div class="qi" onclick="qc(this,false,'q4c')"><span class="ql">A</span>P ↔ Q é verdadeira somente quando P e Q são ambas verdadeiras.</div><div class="qi" onclick="qc(this,true,'q4c')"><span class="ql">B</span>P ↔ Q é verdadeira quando P e Q têm o mesmo valor (VV ou FF).</div><div class="qi" onclick="qc(this,false,'q4c')"><span class="ql">C</span>P ↔ Q é equivalente a P ∧ Q.</div><div class="qfb" id="q4c"></div></div> <button class="db" onclick="openDoubt('a4')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a4',this)">✓ Marcar Aula 04 como concluída</button>
+</section> <!-- ═══ AULA 5 ═══ -->
+<section class="sec" id="sec-a5"> <div class="sh"><div class="sl">Aula 05</div><h2>A Forma Contrapositiva</h2><p>Se P → Q, então ¬Q → ¬P (equivalência fundamental)</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 05 — em breve</div><div class="pd">~6 min</div></div><div class="vf"><span class="vft">Contraposição e Equivalências Lógicas</span><span class="vtg">AULA 05</span></div></div> <a class="dlb" href="slides/Modulo1_Aula05_Contrapositiva_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a5"><button class="tbb on" data-tab="a5c">Conceitual</button><button class="tbb" data-tab="a5f">Formal</button></div> <div class="tbp on" id="a5c"> <p>A <em>contraposição</em> é a equivalência lógica mais importante deste módulo: <strong>P → Q ≡ ¬Q → ¬P</strong>. Negar e inverter ambos os lados produz uma proposição com o mesmo conteúdo lógico.</p> <p>Exemplo: "Se o BC sobe os juros (P), a inflação cai (Q)" e "Se a inflação não caiu (¬Q), o BC não subiu os juros (¬P)" são a mesma afirmação — apenas formuladas de maneiras diferentes.</p> <p>Atenção: a <strong>conversa</strong> (Q → P) e a <strong>inversa</strong> (¬P → ¬Q) <em>não</em> são equivalentes à original.</p> </div> <div class="tbp" id="a5f"> <div class="ttw"><table class="tt"><tr><th>P</th><th>Q</th><th>¬P</th><th>¬Q</th><th class="H">P→Q</th><th class="H">¬Q→¬P</th></tr><tr><td class="T">V</td><td class="T">V</td><td class="F">F</td><td class="F">F</td><td class="T H">V</td><td class="T H">V</td></tr><tr><td class="T">V</td><td class="F">F</td><td class="F">F</td><td class="T">V</td><td class="F H">F</td><td class="F H">F</td></tr><tr><td class="F">F</td><td class="T">V</td><td class="T">V</td><td class="F">F</td><td class="T H">V</td><td class="T H">V</td></tr><tr><td class="F">F</td><td class="F">F</td><td class="T">V</td><td class="T">V</td><td class="T H">V</td><td class="T H">V</td></tr></table></div> <p style="margin-top:8px;font-family:var(--fh);font-size:13px;font-weight:600;color:var(--success)">✓ Colunas idênticas confirmam: P→Q ≡ ¬Q→¬P</p> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>forallx (Magnus):</strong> Cap. 11 (pp. 68–74) — Equivalências lógicas e contraposição.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div><div class="qi" onclick="qc(this,false,'q5a')"><span class="ql">A</span>Se passa (Q), então estudou (P). — conversa, não equivalente.</div><div class="qi" onclick="qc(this,true,'q5a')"><span class="ql">B</span>Se não passou (¬Q), então não estudou (¬P). — contraposição ✓</div><div class="qi" onclick="qc(this,false,'q5a')"><span class="ql">C</span>Se não estudou (¬P), então não passou (¬Q). — inversa, não equivalente.</div><div class="qfb" id="q5a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2: qual é equivalente a P → Q?</div><div class="qi" onclick="qc(this,false,'q5b')"><span class="ql">A</span>Q → P (conversa)</div><div class="qi" onclick="qc(this,false,'q5b')"><span class="ql">B</span>¬P → ¬Q (inversa)</div><div class="qi" onclick="qc(this,true,'q5b')"><span class="ql">C</span>¬Q → ¬P (contraposição)</div><div class="qfb" id="q5b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3</div><div class="qi" onclick="qc(this,true,'q5c')"><span class="ql">A</span>"Quem não estudou matemática não é economista" é a contraposição de "todo economista estuda matemática". ✓</div><div class="qi" onclick="qc(this,false,'q5c')"><span class="ql">B</span>"Todo matemático é economista" é a contraposição. ✗</div><div class="qi" onclick="qc(this,false,'q5c')"><span class="ql">C</span>Contraposição não pode ser usada com quantificadores.</div><div class="qfb" id="q5c"></div></div> <button class="db" onclick="openDoubt('a5')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a5',this)">✓ Marcar Aula 05 como concluída</button>
+</section> <!-- ═══ AULA 6 ═══ -->
+<section class="sec" id="sec-a6"> <div class="sh"><div class="sl">Aula 06</div><h2>Quantificadores: ∀ e ∃</h2><p>Para todo e existe — da linguagem natural à notação formal</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 06 — em breve</div><div class="pd">~8,5 min</div></div><div class="vf"><span class="vft">Quantificador Universal e Existencial</span><span class="vtg">AULA 06</span></div></div> <a class="dlb" href="slides/Modulo1_Aula06_Quantificadores_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a6"><button class="tbb on" data-tab="a6c">Conceitual</button><button class="tbb" data-tab="a6f">Formal</button></div> <div class="tbp on" id="a6c"> <p>A lógica proposicional não consegue expressar afirmações sobre <em>todos</em> os elementos de um conjunto. Para isso precisamos dos quantificadores.</p> <p><strong>∀x P(x)</strong> — "para todo x, P(x) é verdadeiro". Para refutar: basta um <em>contraexemplo</em>.</p> <p><strong>∃x P(x)</strong> — "existe pelo menos um x tal que P(x) é verdadeiro". Para provar: basta <em>exibir um exemplo</em>.</p> <p>Em economia: "Para todo consumidor racional, a utilidade marginal é decrescente" (∀) vs. "Existe uma alocação Pareto-eficiente" (∃).</p> </div> <div class="tbp" id="a6f"> <div class="lb"><span class="s">∀</span>x P(x) <span class="n">— "para todo x no domínio D, P(x) é verdadeiro"</span><br><span class="s">∃</span>x P(x) <span class="n">— "existe pelo menos um x em D tal que P(x) é verdadeiro"</span><br><span class="k">Negações:</span><br><span class="s">¬</span>(<span class="s">∀</span>x P(x)) <span class="s">≡</span> <span class="s">∃</span>x <span class="s">¬</span>P(x)<br><span class="s">¬</span>(<span class="s">∃</span>x P(x)) <span class="s">≡</span> <span class="s">∀</span>x <span class="s">¬</span>P(x)</div> <div class="co g"><div class="co-t"> Definição de Limite</div><div class="lb" style="margin:8px 0 0">lim f(x) = L &nbsp;<span class="s">≡</span>&nbsp; <span class="s">∀</span>ε&gt;0, <span class="s">∃</span>δ&gt;0 : 0&lt;|x−a|&lt;δ <span class="s">→</span> |f(x)−L|&lt;ε</div>Para toda tolerância ε no output, existe δ no input tal que a proximidade no input garante a proximidade no output.</div> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>forallx (Magnus):</strong> Caps. 20–22 (pp. 112–130) — Quantificadores, domínio e negação.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1</div><div class="qi" onclick="qc(this,true,'q6a')"><span class="ql">A</span>Para refutar ∀x P(x), basta encontrar um único x para o qual P(x) é falso (contraexemplo).</div><div class="qi" onclick="qc(this,false,'q6a')"><span class="ql">B</span>Para refutar ∀x P(x), é preciso mostrar que a maioria dos x não satisfaz P.</div><div class="qi" onclick="qc(this,false,'q6a')"><span class="ql">C</span>Para refutar ∀x P(x), basta provar que ∃x P(x) é verdadeiro.</div><div class="qfb" id="q6a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2: ¬(∀x P(x)) é equivalente a:</div><div class="qi" onclick="qc(this,false,'q6b')"><span class="ql">A</span>∀x ¬P(x)</div><div class="qi" onclick="qc(this,true,'q6b')"><span class="ql">B</span>∃x ¬P(x)</div><div class="qi" onclick="qc(this,false,'q6b')"><span class="ql">C</span>¬∃x P(x)</div><div class="qfb" id="q6b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3: e se invertêssemos ∀ e ∃ na definição de limite?</div><div class="qi" onclick="qc(this,false,'q6c')"><span class="ql">A</span>Nada mudaria — a ordem dos quantificadores não altera o significado.</div><div class="qi" onclick="qc(this,true,'q6c')"><span class="ql">B</span>O significado mudaria completamente: passaria a exigir um δ único que funcione para todos os ε — afirmação muito mais forte e geralmente falsa.</div><div class="qi" onclick="qc(this,false,'q6c')"><span class="ql">C</span>A definição deixaria de ser matematicamente válida.</div><div class="qfb" id="q6c"></div></div> <button class="db" onclick="openDoubt('a6')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a6',this)">✓ Marcar Aula 06 como concluída</button>
+</section> <!-- ═══ AULA 7 ═══ -->
+<section class="sec" id="sec-a7"> <div class="sh"><div class="sl">Aula 07</div><h2>Lógica e Conjuntos</h2><p>Como a linguagem lógica descreve os conjuntos que usamos em matemática</p></div> <div class="vw"><div class="vph"><div class="pr"><div class="pt"></div></div><div class="pl">Vídeo Aula 07 — em breve</div><div class="pd">~5 min</div></div><div class="vf"><span class="vft">Conjuntos como Predicados Lógicos</span><span class="vtg">AULA 07</span></div></div> <a class="dlb" href="slides/Modulo1_Aula07_Logica-e-Conjuntos_Slides.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Baixar slides desta aula (PDF)</a> <div class="tbr" data-group="a7"><button class="tbb on" data-tab="a7c">Conceitual</button><button class="tbb" data-tab="a7f">Formal</button></div> <div class="tbp on" id="a7c"> <p>Conjuntos e lógica são duas faces da mesma moeda. Cada operação sobre conjuntos corresponde a um conectivo lógico: <strong>∪ ↔ ∨</strong>, <strong>∩ ↔ ∧</strong>, <strong>complemento ↔ ¬</strong>.</p> <p>O ponto mais elegante: dizer que A ⊆ B é exatamente dizer <strong>∀x (x∈A → x∈B)</strong> — uma implicação dentro de um quantificador universal. Provar que A = B exige provar A ⊆ B e B ⊆ A: ida e volta, como na equivalência.</p> </div> <div class="tbp" id="a7f"> <div class="lb">A <span class="s">∪</span> B = {x : x<span class="s">∈</span>A <span class="s">∨</span> x<span class="s">∈</span>B}<br>A <span class="s">∩</span> B = {x : x<span class="s">∈</span>A <span class="s">∧</span> x<span class="s">∈</span>B}<br>Aᶜ &nbsp;&nbsp;&nbsp;= {x : <span class="s">¬</span>(x<span class="s">∈</span>A)}<br>A <span class="s">⊆</span> B &nbsp;<span class="s">↔</span>&nbsp; <span class="s">∀</span>x (x<span class="s">∈</span>A <span class="s">→</span> x<span class="s">∈</span>B)<br>A = B &nbsp;&nbsp;<span class="s">↔</span>&nbsp; (A<span class="s">⊆</span>B) <span class="s">∧</span> (B<span class="s">⊆</span>A)</div> <div class="co"><div class="co-t">Leis de De Morgan para Conjuntos</div>(A ∪ B)ᶜ = Aᶜ ∩ Bᶜ &nbsp;·&nbsp; (A ∩ B)ᶜ = Aᶜ ∪ Bᶜ<br>São exatamente as mesmas leis que valem para ¬(P∨Q) e ¬(P∧Q).</div> </div> <div class="bib"><div class="bib-t"> Referência Bibliográfica</div><div class="bib-b"><strong>Book of Proof (Hammack):</strong> Cap. 1 — Conjuntos.</div></div> <div class="qw"><div class="qt">Verificação rápida — 1: A ∩ B corresponde ao conectivo:</div><div class="qi" onclick="qc(this,false,'q7a')"><span class="ql">A</span>∨ (disjunção)</div><div class="qi" onclick="qc(this,true,'q7a')"><span class="ql">B</span>∧ (conjunção)</div><div class="qi" onclick="qc(this,false,'q7a')"><span class="ql">C</span>→ (implicação)</div><div class="qfb" id="q7a"></div></div> <div class="qw"><div class="qt">Verificação rápida — 2: provar A = B exige:</div><div class="qi" onclick="qc(this,false,'q7b')"><span class="ql">A</span>Mostrar que algum elemento de A pertence a B.</div><div class="qi" onclick="qc(this,true,'q7b')"><span class="ql">B</span>Provar A ⊆ B e B ⊆ A — duas implicações (ida e volta).</div><div class="qi" onclick="qc(this,false,'q7b')"><span class="ql">C</span>Mostrar que A e B têm o mesmo número de elementos.</div><div class="qfb" id="q7b"></div></div> <div class="qw"><div class="qt">Verificação rápida — 3: pela Lei de De Morgan, (A ∪ B)ᶜ =</div><div class="qi" onclick="qc(this,false,'q7c')"><span class="ql">A</span>Aᶜ ∪ Bᶜ</div><div class="qi" onclick="qc(this,true,'q7c')"><span class="ql">B</span>Aᶜ ∩ Bᶜ</div><div class="qi" onclick="qc(this,false,'q7c')"><span class="ql">C</span>A ∩ B</div><div class="qfb" id="q7c"></div></div> <button class="db" onclick="openDoubt('a7')"> Dúvidas sobre esta aula?</button> <button class="cb" onclick="markDone('a7',this)">✓ Marcar Aula 07 como concluída</button>
+</section> <!-- ═══ EXERCÍCIOS ═══ -->
+<section class="sec" id="sec-ex"> <div class="sh"><div class="sl">Exercícios</div><h2>Prática Interativa</h2><p>Múltipla escolha · Verdadeiro/Falso · Resposta livre · Tabela verdade</p></div> <div class="sc-bar"> <div class="sc-ring" id="sc-ring"><div class="sc-in"><div class="sc-pct" id="sc-pct">0%</div><div class="sc-l">acertos</div></div></div> <div class="sc-txt"><div class="sc-h">Seu desempenho</div><div class="sc-d" id="sc-d">Responda as questões para ver sua pontuação</div></div> </div> <!-- EX 01 MC --> <div class="ec" id="e1"><div class="eh" onclick="tog('e1')"><span class="en">01</span><span class="et">múltipla escolha</span><span class="eq">Qual das opções abaixo é uma proposição lógica?</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e1',false)"><span class="ml">a)</span>"Que desemprego absurdo!"</div> <div class="mi" onclick="mc(this,'e1',true)"><span class="ml">b)</span>"A taxa de desemprego em dezembro foi 6,2%."</div> <div class="mi" onclick="mc(this,'e1',false)"><span class="ml">c)</span>"Reduza os gastos públicos agora!"</div> <div class="mi" onclick="mc(this,'e1',false)"><span class="ml">d)</span>"Qual é o melhor instrumento de política monetária?"</div> </div><div class="mf" id="mf-e1"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e1')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 02 VF --> <div class="ec" id="e2"><div class="eh" onclick="tog('e2')"><span class="en">02</span><span class="et">verdadeiro / falso</span><span class="eq">A implicação P → Q é verdadeira quando P é falsa, independentemente do valor de Q.</span><span class="ea">▼</span></div> <div class="eb"><div style="margin-top:11px;font-size:13.5px;color:var(--muted)">A afirmação acima é:</div> <div class="vo"><div class="vi" onclick="vf(this,'e2',true)">✓ Verdadeiro</div><div class="vi" onclick="vf(this,'e2',false)">✗ Falso</div></div> <div class="mf" id="mf-e2"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e2')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 03 MC --> <div class="ec" id="e3"><div class="eh" onclick="tog('e3')"><span class="en">03</span><span class="et">múltipla escolha</span><span class="eq">Seja P = "o BC subiu os juros" e Q = "a inflação caiu". Qual é a contraposição de P → Q?</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e3',false)"><span class="ml">a)</span>Se a inflação caiu, o BC subiu os juros. (Q → P)</div> <div class="mi" onclick="mc(this,'e3',false)"><span class="ml">b)</span>Se o BC não subiu os juros, a inflação não caiu. (¬P → ¬Q)</div> <div class="mi" onclick="mc(this,'e3',true)"><span class="ml">c)</span>Se a inflação não caiu, o BC não subiu os juros. (¬Q → ¬P)</div> <div class="mi" onclick="mc(this,'e3',false)"><span class="ml">d)</span>¬P ∧ ¬Q</div> </div><div class="mf" id="mf-e3"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e3')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 04 Resposta livre --> <div class="ec" id="e4"><div class="eh" onclick="tog('e4')"><span class="en">04</span><span class="et">resposta livre</span><span class="eq">Traduza para notação lógica: "Cláudio ama Beatriz E existe alguém que Beatriz ama". Use A(x,y) = "x ama y", b = Beatriz, c = Cláudio.</span><span class="ea">▼</span></div> <div class="eb"><div class="txw"><input class="txi" id="tx-e4" type="text" placeholder="Ex: A(c,b) ∧ ∃x A(b,x)"></div> <div class="br"><button class="ckb" onclick="tx('e4',['A(c,b) ∧ ∃x A(b,x)','A(c,b)∧∃xA(b,x)','a(c,b) ∧ ∃x a(b,x)'])">Verificar</button><button class="hb" onclick="hint('hx-e4')"> Dica</button></div> <div class="hx" id="hx-e4">Use ∧ para "e". ∃x A(b,x) significa "existe x tal que Beatriz ama x".</div> <div class="mf" id="mf-e4"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e4')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 05 VF --> <div class="ec" id="e5"><div class="eh" onclick="tog('e5')"><span class="en">05</span><span class="et">verdadeiro / falso</span><span class="eq">¬(P ∧ Q) é equivalente a ¬P ∧ ¬Q (Lei de De Morgan).</span><span class="ea">▼</span></div> <div class="eb"><div style="margin-top:11px;font-size:13.5px;color:var(--muted)">A afirmação acima é:</div> <div class="vo"><div class="vi" onclick="vf(this,'e5',false)">✓ Verdadeiro</div><div class="vi" onclick="vf(this,'e5',true)">✗ Falso</div></div> <div class="br"><button class="hb" onclick="hint('hx-e5')"> Dica</button></div> <div class="hx" id="hx-e5">De Morgan: ¬(P∧Q) ≡ ¬P ∨ ¬Q (não ∧, mas ∨!). A negação de uma conjunção é a disjunção das negações.</div> <div class="mf" id="mf-e5"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e5')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 06 Tabela verdade interativa --> <div class="ec" id="e6"><div class="eh" onclick="tog('e6')"><span class="en">06</span><span class="et">tabela verdade</span><span class="eq">Complete a tabela verdade para P ∧ ¬Q e P ∨ ¬Q.</span><span class="ea">▼</span></div> <div class="eb"><div style="margin-top:12px;font-size:13px;color:var(--muted);margin-bottom:9px">Selecione V ou F para cada célula:</div> <div class="ttw"><table class="tt" id="tt6"> <tr><th>P</th><th>Q</th><th>¬Q</th><th>P ∧ ¬Q</th><th>P ∨ ¬Q</th></tr> <tr><td class="T">V</td><td class="T">V</td><td class="F">F</td><td><select class="tts" data-a="F"><option value="">—</option><option>V</option><option>F</option></select></td><td><select class="tts" data-a="V"><option value="">—</option><option>V</option><option>F</option></select></td></tr> <tr><td class="T">V</td><td class="F">F</td><td class="T">V</td><td><select class="tts" data-a="V"><option value="">—</option><option>V</option><option>F</option></select></td><td><select class="tts" data-a="V"><option value="">—</option><option>V</option><option>F</option></select></td></tr> <tr><td class="F">F</td><td class="T">V</td><td class="F">F</td><td><select class="tts" data-a="F"><option value="">—</option><option>V</option><option>F</option></select></td><td><select class="tts" data-a="F"><option value="">—</option><option>V</option><option>F</option></select></td></tr> <tr><td class="F">F</td><td class="F">F</td><td class="T">V</td><td><select class="tts" data-a="F"><option value="">—</option><option>V</option><option>F</option></select></td><td><select class="tts" data-a="V"><option value="">—</option><option>V</option><option>F</option></select></td></tr> </table></div> <div class="br"><button class="ckb" onclick="chkTT('e6','tt6')">Verificar</button></div> <div class="ttf" id="ttf-e6"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e6')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 07 MC quantificadores --> <div class="ec" id="e7"><div class="eh" onclick="tog('e7')"><span class="en">07</span><span class="et">múltipla escolha</span><span class="eq">"Para todo x nos reais positivos, existe y maior que x" é representado por:</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e7',false)"><span class="ml">a)</span>∃y ∀x (x &gt; 0 → y &gt; x)</div> <div class="mi" onclick="mc(this,'e7',true)"><span class="ml">b)</span>∀x (x &gt; 0 → ∃y : y &gt; x)</div> <div class="mi" onclick="mc(this,'e7',false)"><span class="ml">c)</span>∀x ∀y (x &gt; 0 ∧ y &gt; x)</div> <div class="mi" onclick="mc(this,'e7',false)"><span class="ml">d)</span>∃x ∃y (y &gt; x)</div> </div> <div class="br"><button class="hb" onclick="hint('hx-e7')"> Dica</button></div> <div class="hx" id="hx-e7">Pense na ordem: primeiro "para todo x positivo" (∀), depois "para esse x existe y maior" (∃). A ordem importa!</div> <div class="mf" id="mf-e7"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e7')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 08 Resposta livre — contraposição --> <div class="ec" id="e8"><div class="eh" onclick="tog('e8')"><span class="en">08</span><span class="et">resposta livre</span><span class="eq">P = "o mercado é monopolista", Q = "o preço é maior que o custo marginal". Escreva a contraposição de P → Q em notação lógica.</span><span class="ea">▼</span></div> <div class="eb"><div class="txw"><input class="txi" id="tx-e8" type="text" placeholder="Escreva a contraposição..."></div> <div class="br"><button class="ckb" onclick="tx('e8',['¬Q → ¬P','¬Q→¬P','~Q → ~P','não Q → não P'])">Verificar</button><button class="hb" onclick="hint('hx-e8')"> Dica</button></div> <div class="hx" id="hx-e8">A contraposição de P → Q é sempre ¬Q → ¬P: nega os dois lados e inverte a ordem.</div> <div class="mf" id="mf-e8"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e8')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 09 VF conjuntos --> <div class="ec" id="e9"><div class="eh" onclick="tog('e9')"><span class="en">09</span><span class="et">verdadeiro / falso</span><span class="eq">A ∩ B = B ∩ A para quaisquer conjuntos A e B (interseção é comutativa).</span><span class="ea">▼</span></div> <div class="eb"><div style="margin-top:11px;font-size:13.5px;color:var(--muted)">A afirmação acima é:</div> <div class="vo"><div class="vi" onclick="vf(this,'e9',true)">✓ Verdadeiro</div><div class="vi" onclick="vf(this,'e9',false)">✗ Falso</div></div> <div class="mf" id="mf-e9"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e9')"> Dúvidas sobre esta questão?</button></div></div> <!-- EX 10 MC raciocínio --> <div class="ec" id="e10"><div class="eh" onclick="tog('e10')"><span class="en">10</span><span class="et">múltipla escolha</span><span class="eq">Sabemos que "todo número primo maior que 2 é ímpar" (P→Q). O número 15 é ímpar mas não é primo. O que podemos concluir?</span><span class="ea">▼</span></div> <div class="eb"><div class="mo"> <div class="mi" onclick="mc(this,'e10',false)"><span class="ml">a)</span>P→Q é falsa, pois encontramos um ímpar que não é primo.</div> <div class="mi" onclick="mc(this,'e10',true)"><span class="ml">b)</span>P→Q continua válida. O caso P=falso, Q=verdadeiro não invalida a implicação.</div> <div class="mi" onclick="mc(this,'e10',false)"><span class="ml">c)</span>Precisamos mais dados para decidir.</div> </div> <div class="br"><button class="hb" onclick="hint('hx-e10')"> Dica</button></div> <div class="hx" id="hx-e10">P→Q só é falsa quando P=V e Q=F. Para 15: P (é primo) = F. Logo a implicação vale trivialmente para esse caso.</div> <div class="mf" id="mf-e10"></div> <button class="db db-sm" style="margin-top:12px;font-size:12px;padding:6px 13px;" onclick="openDoubt_ex('e10')"> Dúvidas sobre esta questão?</button></div></div> <button class="cb" onclick="markDone('ex',this)">✓ Marcar Exercícios como concluídos</button>
+</section>
+<section class="sec" id="sec-gl">
+<div class="sh"><div class="sl">Consulta</div><h2>Glossário de símbolos</h2></div>
+<p class="gl-sub">Todos os símbolos usados neste módulo, na ordem em que aparecem</p>
+<p class="gl-intro">Esta página existe para consulta rápida. Se você esbarrou num símbolo e não lembra o que ele quer dizer, procure aqui — a última coluna indica a aula onde ele é apresentado, caso você queira voltar e rever o contexto.</p>
+<div class="gl-grp">
+<div class="gl-t">Proposições e valores lógicos</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">P, Q</td><td class="gl-n">Variáveis proposicionais</td><td class="gl-l">“pê”, “quê”</td><td class="gl-d">Letras que representam proposições quaisquer. Funcionam como o x da álgebra: seguram o lugar de uma afirmação concreta.</td><td class="gl-a"><span class="gl-tag">Aula 01</span></td></tr>
+<tr><td class="gl-s">V</td><td class="gl-n">Verdadeiro</td><td class="gl-l">“verdadeiro”</td><td class="gl-d">Um dos dois valores lógicos possíveis de uma proposição.</td><td class="gl-a"><span class="gl-tag">Aula 01</span></td></tr>
+<tr><td class="gl-s">F</td><td class="gl-n">Falso</td><td class="gl-l">“falso”</td><td class="gl-d">O outro valor lógico possível. Toda proposição tem exatamente um dos dois — nunca os dois.</td><td class="gl-a"><span class="gl-tag">Aula 01</span></td></tr>
+<tr><td class="gl-s">∴</td><td class="gl-n">Portanto</td><td class="gl-l">“logo”, “portanto”</td><td class="gl-d">Marca a conclusão de um argumento. Vem depois das premissas.</td><td class="gl-a"><span class="gl-tag">Aula 01</span></td></tr>
+</tbody></table>
+</div>
+<div class="gl-grp">
+<div class="gl-t">Conectivos lógicos</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">¬</td><td class="gl-n">Negação</td><td class="gl-l">“não P”</td><td class="gl-d">Inverte o valor de verdade: se P é verdadeira, ¬P é falsa, e vice-versa. Também aparece escrito como ~P.</td><td class="gl-a"><span class="gl-tag">Aula 02</span></td></tr>
+<tr><td class="gl-s">∧</td><td class="gl-n">Conjunção</td><td class="gl-l">“P e Q”</td><td class="gl-d">Verdadeira somente quando as duas proposições são verdadeiras. Basta uma falhar para derrubar tudo.</td><td class="gl-a"><span class="gl-tag">Aula 02</span></td></tr>
+<tr><td class="gl-s">∨</td><td class="gl-n">Disjunção</td><td class="gl-l">“P ou Q”</td><td class="gl-d">Verdadeira quando ao menos uma é verdadeira — incluindo o caso em que as duas são. É o “ou” inclusivo.</td><td class="gl-a"><span class="gl-tag">Aula 03</span></td></tr>
+<tr><td class="gl-s">⊕</td><td class="gl-n">Disjunção exclusiva</td><td class="gl-l">“ou P, ou Q”</td><td class="gl-d">Verdadeira quando exatamente uma das duas é verdadeira. Raro em matemática; quando o enunciado quiser isso, vai dizer.</td><td class="gl-a"><span class="gl-tag">Aula 03</span></td></tr>
+<tr><td class="gl-s">→</td><td class="gl-n">Implicação</td><td class="gl-l">“se P, então Q”</td><td class="gl-d">Falsa num único caso: P verdadeira e Q falsa. É o conectivo de todo teorema.</td><td class="gl-a"><span class="gl-tag">Aula 04</span></td></tr>
+<tr><td class="gl-s">↔</td><td class="gl-n">Equivalência</td><td class="gl-l">“P se e somente se Q”</td><td class="gl-d">Verdadeira quando P e Q têm o mesmo valor lógico. Equivale a provar as duas direções, ida e volta.</td><td class="gl-a"><span class="gl-tag">Aula 04</span></td></tr>
+<tr><td class="gl-s">≡</td><td class="gl-n">Equivalência lógica</td><td class="gl-l">“é logicamente equivalente a”</td><td class="gl-d">Indica que duas expressões têm exatamente a mesma tabela verdade. Não é uma operação: é uma afirmação sobre duas fórmulas.</td><td class="gl-a"><span class="gl-tag">Aula 02</span></td></tr>
+</tbody></table>
+</div>
+<div class="gl-grp">
+<div class="gl-t">Quantificadores</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">∀</td><td class="gl-n">Quantificador universal</td><td class="gl-l">“para todo”, “qualquer que seja”</td><td class="gl-d">Afirma que a propriedade vale para todos os elementos do conjunto, sem exceção. Basta um contraexemplo para derrubar.</td><td class="gl-a"><span class="gl-tag">Aula 06</span></td></tr>
+<tr><td class="gl-s">∃</td><td class="gl-n">Quantificador existencial</td><td class="gl-l">“existe”, “existe ao menos um”</td><td class="gl-d">Afirma que há pelo menos um elemento com a propriedade. Basta exibir um exemplo para provar.</td><td class="gl-a"><span class="gl-tag">Aula 06</span></td></tr>
+<tr><td class="gl-s">¬∃  (∄)</td><td class="gl-n">Não existe</td><td class="gl-l">“não existe nenhum”</td><td class="gl-d">Nega a existência. Equivale a dizer que a propriedade falha para todos: ¬∃x P(x) ≡ ∀x ¬P(x). Este material escreve ¬∃; a forma compacta ∄ é comum em outros livros.</td><td class="gl-a"><span class="gl-tag">Aula 06</span></td></tr>
+</tbody></table>
+</div>
+<div class="gl-grp">
+<div class="gl-t">Conjuntos</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">∈</td><td class="gl-n">Pertence</td><td class="gl-l">“x pertence a A”</td><td class="gl-d">Indica que o objeto é elemento do conjunto.</td><td class="gl-a"><span class="gl-tag">Aula 06</span></td></tr>
+<tr><td class="gl-s">∉</td><td class="gl-n">Não pertence</td><td class="gl-l">“x não pertence a A”</td><td class="gl-d">A negação da pertinência.</td><td class="gl-a"><span class="gl-tag">Aula 07</span></td></tr>
+<tr><td class="gl-s">{ x : P(x) }</td><td class="gl-n">Notação por compreensão</td><td class="gl-l">“o conjunto dos x tais que P de x”</td><td class="gl-d">Define o conjunto por uma propriedade em vez de listar elementos. O que vem depois dos dois-pontos é um predicado lógico.</td><td class="gl-a"><span class="gl-tag">Aula 07</span></td></tr>
+<tr><td class="gl-s">∪</td><td class="gl-n">União</td><td class="gl-l">“A união B”</td><td class="gl-d">Os elementos que estão em A ou em B. É o conectivo ∨ em linguagem de conjuntos.</td><td class="gl-a"><span class="gl-tag">Aula 07</span></td></tr>
+<tr><td class="gl-s">∩</td><td class="gl-n">Interseção</td><td class="gl-l">“A interseção B”</td><td class="gl-d">Os elementos que estão em A e em B. É o conectivo ∧ em linguagem de conjuntos.</td><td class="gl-a"><span class="gl-tag">Aula 07</span></td></tr>
+<tr><td class="gl-s">\</td><td class="gl-n">Diferença</td><td class="gl-l">“A menos B”</td><td class="gl-d">Os elementos que estão em A mas não em B. Combina ∧ com uma negação.</td><td class="gl-a"><span class="gl-tag">Aula 07</span></td></tr>
+<tr><td class="gl-s">Aᶜ</td><td class="gl-n">Complemento</td><td class="gl-l">“complemento de A”</td><td class="gl-d">Tudo o que está fora de A. É a negação em linguagem de conjuntos.</td><td class="gl-a"><span class="gl-tag">Aula 07</span></td></tr>
+<tr><td class="gl-s">⊆</td><td class="gl-n">Contido</td><td class="gl-l">“A está contido em B”</td><td class="gl-d">Todo elemento de A também é elemento de B. Equivale a ∀x (x ∈ A → x ∈ B).</td><td class="gl-a"><span class="gl-tag">Aula 07</span></td></tr>
+</tbody></table>
+</div>
+<div class="gl-grp">
+<div class="gl-t">Conjuntos numéricos</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">ℝ</td><td class="gl-n">Números reais</td><td class="gl-l">“erre”, “os reais”</td><td class="gl-d">Todos os números da reta numérica, racionais e irracionais.</td><td class="gl-a"><span class="gl-tag">Aula 06</span></td></tr>
+<tr><td class="gl-s">ℕ</td><td class="gl-n">Números naturais</td><td class="gl-l">“ene”, “os naturais”</td><td class="gl-d">Os números de contagem: 1, 2, 3, e assim por diante.</td><td class="gl-a"><span class="gl-tag">Aula 07</span></td></tr>
+</tbody></table>
+</div>
+<div class="gl-grp">
+<div class="gl-t">Na definição de limite</div>
+<table class="gl"><thead><tr><th class="gl-hs">Símbolo</th><th>Nome</th><th>Lê-se</th><th>O que significa</th><th class="gl-ha">Aula</th></tr></thead><tbody>
+<tr><td class="gl-s">ε</td><td class="gl-n">Épsilon</td><td class="gl-l">“épsilon”</td><td class="gl-d">Letra grega usada para a margem de erro tolerada na saída da função. Por convenção, sempre positiva e pensada como pequena.</td><td class="gl-a"><span class="gl-tag">Aula 06</span></td></tr>
+<tr><td class="gl-s">δ</td><td class="gl-n">Delta</td><td class="gl-l">“delta”</td><td class="gl-d">Letra grega usada para o raio da vizinhança na entrada. É a resposta ao desafio imposto por ε.</td><td class="gl-a"><span class="gl-tag">Aula 06</span></td></tr>
+<tr><td class="gl-s">|x − a|</td><td class="gl-n">Módulo</td><td class="gl-l">“módulo de x menos a”</td><td class="gl-d">A distância entre x e a, sempre não negativa. Por isso mede proximidade sem se importar com o lado.</td><td class="gl-a"><span class="gl-tag">Aula 06</span></td></tr>
+<tr><td class="gl-s">lim</td><td class="gl-n">Limite</td><td class="gl-l">“limite de f de x quando x tende a a”</td><td class="gl-d">O valor do qual f(x) se aproxima arbitrariamente à medida que x se aproxima de a.</td><td class="gl-a"><span class="gl-tag">Aula 06</span></td></tr>
+</tbody></table>
+</div>
+</section>
+ </main>
+</div><!-- /shell --> <button class="mob" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button> <!-- MODAL Dúvidas -->
+<div class="ov" id="modal" onclick="closeModal(event)"> <div class="md"> <div class="mdh"><div class="mdt"> Prompt para IA — Tire sua dúvida</div><button class="mdc" onclick="closeModal()">✕</button></div> <div class="mdb">Copie o prompt abaixo e cole no <strong>Claude AI</strong> (claude.ai) ou em qualquer assistente de IA para obter ajuda personalizada.</div> <div class="mdp" id="mdp"></div> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"> <button class="cpb" id="cpb" onclick="copyPrompt()"> Copiar prompt</button> <a href="https://claude.ai" target="_blank" style="font-family:var(--fh);font-size:12px;color:var(--blue);text-decoration:underline">Abrir Claude AI →</a> </div> </div>
+</div> <script>
+// ── STATE ──────────────────────────────────────────────────────────
+const secs = ['disc','ov','a1','a2','a3','a4','a5','a6','a7','ex'];
+const done = {disc:true, ov:true};
+let answered = 0, correct = 0;
+const recorded = {};
+
+// ── NAVIGATION ────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('vis'));
+  const el = document.getElementById('sec-' + id);
+  if (el) el.classList.add('vis');
+  document.querySelectorAll('.nav-a').forEach(a => {
+    a.classList.toggle('active', (a.getAttribute('onclick')||'').includes("'"+id+"'"));
+  });
+  document.getElementById('main').scrollTo({top:0, behavior:'smooth'});
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+// ── TABS ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tbr').forEach(row => {
+    const group = row.dataset.group;
+    row.querySelectorAll('.tbb').forEach(btn => {
+      btn.addEventListener('click', () => {
+        row.querySelectorAll('.tbb').forEach(b => b.classList.remove('on'));
+        btn.classList.add('on');
+        const tid = btn.dataset.tab;
+        // find all panes with id starting with group prefix — deactivate those in this row's section
+        const sec = row.closest('.sec');
+        if (sec) {
+          sec.querySelectorAll('.tbp').forEach(p => {
+            if (p.closest('.tbr') !== row) return; // skip nested
+            p.classList.remove('on');
+          });
+          // Actually just find panes that share the same group (by tab id prefix)
+          sec.querySelectorAll('.tbp').forEach(p => {
+            if (p.id && p.id.startsWith(group)) p.classList.remove('on');
+          });
+        }
+        const t = document.getElementById(tid);
+        if (t) t.classList.add('on');
+      });
+    });
+  });
+});
+
+// ── PROGRESS ─────────────────────────────────────────────────────
+function updProg() {
+  const d = secs.filter(s => done[s]).length;
+  const p = Math.round(d / secs.length * 100);
+  document.getElementById('pp').textContent = p + '%';
+  document.getElementById('pf').style.width = p + '%';
+}
+
+function markDone(id, btn) {
+  done[id] = true;
+  if (btn) { btn.classList.add('done'); btn.innerHTML = '✓ Concluído!'; }
+  const ck = document.getElementById('ck-' + id);
+  if (ck) { ck.classList.add('done'); ck.textContent = '✓'; }
+  updProg();
+}
+
+// ── QUICK CHECKS ──────────────────────────────────────────────────
+const qfb = {
+  q1a:['Uma proposição pode ser falsa — o que a define é ter valor de verdade (V ou F).','Proposições podem ser falsas! O critério é poder ser classificada como V ou F.'],
+  q1b:['Imperativo — "Feche a porta!" não pode ser V nem F.','As outras duas têm valor de verdade e são proposições.'],
+  q1c:['Opiniões têm valor de verdade (mesmo que discutível). São proposições.','Opiniões são proposições — podem ser julgadas V ou F.'],
+  q2a:['O "embora" é uma conjunção disfarçada — as duas coisas são verdadeiras ao mesmo tempo.','Revisit: "embora", "mas", "porém" indicam conjunção (∧).'],
+  q2b:['Correto — a conjunção exige ambos verdadeiros.','Veja a tabela verdade de P ∧ Q.'],
+  q2c:['¬¬P ≡ P — a dupla negação cancela.','Tabela verdade: ¬¬P tem o mesmo valor que P.'],
+  q3a:['P ∨ Q é falsa apenas quando F∧F. Qualquer V dá V.','Revisit: apenas VV→F. Com um V, P∨Q é V.'],
+  q3b:['(P∨Q)∧¬(P∧Q) — inclui um dos dois, mas exclui o caso em que ambos são V.','Revisit: o exclusivo precisa de duas condições combinadas.'],
+  q3c:['Em matemática formal, "ou" sem qualificação = inclusivo.','O padrão em matemática é o inclusivo.'],
+  q4a:['Apenas P=V e Q=F dá F. Nos outros 3 casos, P→Q é V.','Confira a tabela verdade de →.'],
+  q4b:['Q→P é a conversa — proposição diferente com tabela verdade diferente.','Revisit: a implicação não é comutativa.'],
+  q4c:['↔ é V quando VV ou FF — mesmo valor dos dois lados.','P↔Q ≡ (P→Q)∧(Q→P).'],
+  q5a:['¬Q→¬P: negar e inverter. Se não passou, então não estudou.','Cuidado: ¬P→¬Q é a inversa (não equivalente). ¬Q→¬P é a contraposição.'],
+  q5b:['Somente a contraposição (¬Q→¬P) é equivalente.','Conversa e inversa não são equivalentes.'],
+  q5c:['Contraposição: "quem não estudou math" (¬Q) "não é economista" (¬P).','Q→P seria a conversa, que não é garantida.'],
+  q6a:['Um contraexemplo (um x com P(x)=F) é suficiente para refutar ∀.','Para refutar "todos", basta um que não satisfaça.'],
+  q6b:['¬(∀x P(x)) ≡ ∃x ¬P(x). A negação do universal é o existencial da negação.','Revisit: regras de negação dos quantificadores.'],
+  q6c:['A ordem dos quantificadores importa muito — muda completamente o significado.','Com ∃δ antes de ∀ε, precisaríamos de um δ único para todos os ε — muito mais restritivo.'],
+  q7a:['∩ ↔ ∧: pertencer a A E a B.','Interseção corresponde ao conectivo E (∧).'],
+  q7b:['A=B ↔ (A⊆B)∧(B⊆A) — duas implicações.','Igualdade de conjuntos exige contenção nos dois sentidos.'],
+  q7c:['De Morgan: (A∪B)ᶜ = Aᶜ∩Bᶜ.','Revisit Leis de De Morgan para conjuntos.'],
+};
+
+function qc(el, ok, fid) {
+  const wrap = el.parentElement;
+  wrap.querySelectorAll('.qi').forEach(i => { i.classList.add('done'); i.style.pointerEvents='none'; });
+  el.classList.add(ok ? 'ok' : 'no');
+  const fb = document.getElementById(fid);
+  fb.className = 'qfb show ' + (ok ? 'ok' : 'no');
+  const msgs = qfb[fid] || ['✓ Correto!', '✗ Tente novamente.'];
+  fb.textContent = (ok ? '✓ ' : '✗ ') + msgs[ok ? 0 : 1];
+}
+
+// ── EXERCISES ─────────────────────────────────────────────────────
+function tog(id) { document.getElementById(id).classList.toggle('op'); }
+
+const exfb = {
+  e1:['✓ Correto! Proposições têm valor de verdade. Exclamações, imperativos e perguntas não.','✗ A alternativa correta é a única que pode ser V ou F.'],
+  e2:['✓ Correto! Quando P é falsa, P→Q é sempre verdadeira — implicação vacuamente verdadeira.','✗ Não. Quando P é falsa, a implicação é sempre V, independente de Q.'],
+  e3:['✓ Correto! Contraposição = negar E inverter ambos os lados. ¬Q→¬P.','✗ Atenção: ¬P→¬Q é a inversa (não equivalente!). A contraposição é ¬Q→¬P.'],
+  e4:['✓ Correto! A(c,b) ∧ ∃x A(b,x) — Cláudio ama Beatriz E existe x que Beatriz ama.','✗ A resposta esperada é A(c,b) ∧ ∃x A(b,x). Verifique a notação.'],
+  e5:['','✗ De Morgan: ¬(P∧Q) ≡ ¬P ∨ ¬Q (não ∧, mas ∨!). A negação da conjunção é a disjunção das negações.'],
+  e7:['✓ Correto! ∀x (x>0 → ∃y: y>x). Para todo x positivo, para esse x existe y maior.','✗ A ordem importa: ∀x primeiro, depois ∃y para aquele x específico.'],
+  e8:['✓ Correto! ¬Q → ¬P: negar e inverter ambos os lados.','✗ A contraposição de P→Q é ¬Q→¬P.'],
+  e9:['✓ Correto! A∩B = {x: x∈A ∧ x∈B} = {x: x∈B ∧ x∈A} = B∩A. A conjunção é comutativa.','✗ A interseção é comutativa — A∩B = B∩A.'],
+  e10:['✓ Correto! P→Q só é falsa quando P=V e Q=F. Para 15: P (é primo) = F, então a implicação vale trivialmente.','✗ Revisit: P→Q é falsa apenas quando P=V e Q=F. Aqui P=F para 15.'],
+};
+
+function rec(id, ok) {
+  if (recorded[id] !== undefined) return;
+  recorded[id] = ok; answered++; if (ok) correct++;
+  updScore();
+}
+
+function updScore() {
+  const p = answered > 0 ? Math.round(correct/answered*100) : 0;
+  document.getElementById('sc-pct').textContent = p + '%';
+  document.getElementById('sc-d').textContent = answered > 0
+    ? correct + ' de ' + answered + ' questões respondidas corretamente'
+    : 'Responda as questões para ver sua pontuação';
+  const col = p >= 70 ? '#17365E' : p >= 40 ? '#E3B505' : '#9C3B2E';
+  document.getElementById('sc-ring').style.background =
+    'conic-gradient(' + col + ' ' + p + '%, var(--border) 0%)';
+}
+
+function mc(el, id, ok) {
+  document.getElementById(id).querySelectorAll('.mi').forEach(m => { m.classList.add('done'); m.style.pointerEvents='none'; });
+  el.classList.add(ok ? 'ok' : 'no');
+  const fb = document.getElementById('mf-'+id);
+  const msgs = exfb[id] || ['✓ Correto!','✗ Tente novamente.'];
+  fb.className = 'mf show ' + (ok ? 'ok' : 'no');
+  fb.textContent = msgs[ok ? 0 : 1];
+  rec(id, ok);
+}
+
+function vf(el, id, ok) {
+  el.parentElement.querySelectorAll('.vi').forEach(v => { v.style.pointerEvents='none'; });
+  el.classList.add(ok ? 'ok' : 'no');
+  const fb = document.getElementById('mf-'+id);
+  const msgs = exfb[id] || ['✓ Correto!','✗ Tente novamente.'];
+  fb.className = 'mf show ' + (ok ? 'ok' : 'no');
+  // e5 has flipped messages (correct = clicking Falso)
+  fb.textContent = msgs[ok ? 0 : 1] || (ok ? '✓ Correto!' : '✗ Tente novamente.');
+  rec(id, ok);
+}
+
+function tx(id, accepted) {
+  const inp = document.getElementById('tx-'+id);
+  const val = inp.value.trim().toLowerCase().replace(/\s/g,'');
+  const ok = accepted.some(a => val === a.toLowerCase().replace(/\s/g,''));
+  inp.className = 'txi ' + (ok ? 'ok' : 'no');
+  const fb = document.getElementById('mf-'+id);
+  const msgs = exfb[id] || ['✓ Correto!','✗ Tente novamente.'];
+  fb.className = 'mf show ' + (ok ? 'ok' : 'no');
+  fb.textContent = msgs[ok ? 0 : 1];
+  rec(id, ok);
+}
+
+function hint(id) { const el = document.getElementById(id); if(el) el.classList.toggle('show'); }
+
+function chkTT(exid, tid) {
+  const sels = document.querySelectorAll('#'+tid+' .tts');
+  let all = true, filled = true;
+  sels.forEach(s => {
+    if (!s.value) { filled=false; return; }
+    s.classList.remove('ok','no');
+    const ok = s.value === s.dataset.a;
+    s.classList.add(ok ? 'ok' : 'no');
+    if (!ok) all = false;
+  });
+  const fb = document.getElementById('ttf-'+exid);
+  fb.classList.remove('show');
+  void fb.offsetWidth;
+  if (!filled) { fb.className='ttf show no'; fb.textContent=' Preencha todas as células antes de verificar.'; return; }
+  fb.className = 'ttf show ' + (all ? 'ok' : 'no');
+  fb.textContent = all
+    ? '✓ Perfeito! P∧¬Q é V somente quando P=V e ¬Q=V. P∨¬Q é V sempre que P=V ou Q=F (ou ambos).'
+    : '✗ Algumas células incorretas. Lembre: P∧¬Q exige P=V E ¬Q=V. P∨¬Q precisa de ao menos um V.';
+  rec(exid, all);
+}
+
+// ── DOUBT MODAL ───────────────────────────────────────────────────
+const prompts = {
+  a1:`Olá! Estou estudando o Módulo 1 de Matemática I da FGV EESP — Aula 01: "O que é uma Proposição?".
+
+Conteúdo: definição de proposição lógica, proposições simples (átomos) vs compostas, os cinco conectivos (¬, ∧, ∨, →, ↔).
+
+Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP.
+
+Por favor: explique os conceitos de lógica envolvidos neste tópico, dê exemplos econômicos sempre que possível e mostre o passo a passo do raciocínio.`,
+  a2:`Olá! Estou na Aula 02 do Módulo 1 (FGV EESP): Negação (¬P) e Conjunção (P ∧ Q).
+
+Tópicos: tabela verdade da negação, ¬¬P ≡ P, tabela verdade da conjunção, conjunções disfarçadas em linguagem natural.
+
+Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP.
+
+Por favor: explique os conceitos de lógica envolvidos, dê o passo a passo do raciocínio e, se útil, forneça exemplos similares.`,
+  a3:`Olá! Aula 03 — Disjunção (P ∨ Q).
+
+Tópicos: "ou" inclusivo vs. exclusivo, tabela verdade, disjunção exclusiva como (P∨Q)∧¬(P∧Q).
+
+Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP.
+
+Por favor: explique os conceitos de lógica envolvidos, dê o passo a passo do raciocínio e, se útil, forneça exemplos similares.`,
+  a4:`Olá! Aula 04 — Implicação (P → Q) e Equivalência (P ↔ Q).
+
+Tópicos: tabela verdade, caso "vacuamente verdadeiro" (P=F), não-comutatividade, equivalência como ida+volta.
+
+Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP.
+
+Por favor: explique os conceitos de lógica envolvidos, dê o passo a passo do raciocínio e use exemplos de política econômica sempre que possível.`,
+  a5:`Olá! Aula 05 — A Forma Contrapositiva.
+
+Conteúdo: P→Q ≡ ¬Q→¬P, verificação por tabela verdade, diferença entre contraposição, conversa e inversa.
+
+Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP.
+
+Por favor: explique os conceitos de lógica envolvidos, dê o passo a passo do raciocínio e, se útil, forneça exemplos similares.`,
+  a6:`Olá! Aula 06 — Quantificadores ∀ e ∃.
+
+Tópicos: ∀x P(x), ∃x P(x), domínio do discurso, negação dos quantificadores, conexão com a definição de limite.
+
+Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP.
+
+Por favor: explique os conceitos de lógica envolvidos, dê o passo a passo do raciocínio e, se útil, forneça exemplos similares.`,
+  a7:`Olá! Aula 07 — Lógica e Conjuntos.
+
+Conteúdo: operações de conjunto como conectivos (∪↔∨, ∩↔∧, complemento↔¬), subconjunto como implicação (A⊆B ↔ ∀x(x∈A→x∈B)), Leis de De Morgan.
+
+Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP.
+
+Por favor: explique os conceitos de lógica envolvidos, dê o passo a passo do raciocínio e, se útil, forneça exemplos similares.`,
+  ex:`Olá! Estou nos exercícios do Módulo 1 (FGV EESP) — Lógica e Linguagem Matemática.
+
+Os exercícios cobrem: proposições, negação, conjunção, disjunção, implicação, contraposição, quantificadores e conjuntos.
+
+Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP.
+
+Por favor: explique os conceitos de lógica envolvidos, dê o passo a passo da solução e, se útil, forneça exemplos similares.`,
+};
+
+
+function openDoubt_ex(eid) {
+  const questions = {
+    e1: 'Qual das opções abaixo é uma proposição lógica?\n(a) "Que desemprego absurdo!"\n(b) "A taxa de desemprego em dezembro foi 6,2%."\n(c) "Reduza os gastos públicos agora!"\n(d) "Qual é o melhor instrumento de política monetária?"',
+    e2: 'Verdadeiro ou Falso: A implicação P → Q é verdadeira quando P é falsa, independentemente do valor de Q.',
+    e3: 'Seja P = "o BC subiu os juros" e Q = "a inflação caiu". Qual é a contraposição de P → Q?\n(a) Q → P  (b) ¬P → ¬Q  (c) ¬Q → ¬P  (d) ¬P ∧ ¬Q',
+    e4: 'Traduza para notação lógica: "Cláudio ama Beatriz E existe alguém que Beatriz ama". Use A(x,y) = "x ama y", b = Beatriz, c = Cláudio.',
+    e5: 'Verdadeiro ou Falso: ¬(P ∧ Q) é equivalente a ¬P ∧ ¬Q (Lei de De Morgan).',
+    e6: 'Complete a tabela verdade para P ∧ ¬Q e P ∨ ¬Q para as quatro combinações de P e Q.',
+    e7: '"Para todo x nos reais positivos, existe y maior que x". Qual a representação correta?\n(a) ∃y ∀x (x>0 → y>x)  (b) ∀x (x>0 → ∃y: y>x)  (c) ∀x ∀y (x>0 ∧ y>x)  (d) ∃x ∃y (y>x)',
+    e8: 'P = "o mercado é monopolista", Q = "o preço é maior que o custo marginal". Escreva a contraposição de P → Q em notação lógica.',
+    e9: 'Verdadeiro ou Falso: A ∩ B = B ∩ A para quaisquer conjuntos A e B.',
+    e10: '"Todo número primo maior que 2 é ímpar" (P→Q). O número 15 é ímpar mas não é primo. O que podemos concluir sobre P→Q?\n(a) P→Q é falsa  (b) P→Q continua válida  (c) Precisamos mais dados',
+  };
+  const q = questions[eid] || '';
+  const prompt = `Sou aluno dos dois primeiros anos da graduação em Economia da FGV EESP. Estou estudando o Módulo 1 de Matemática I, que trata de Lógica e Linguagem Matemática.
+
+Preciso de ajuda com o seguinte exercício:
+
+${q}
+
+Por favor:
+1. Explique os conceitos de lógica envolvidos nesta questão.
+2. Dê o passo a passo da solução.
+3. Se for útil, forneça um exemplo similar para reforçar o entendimento.`;
+  document.getElementById('mdp').textContent = prompt;
+  document.getElementById('modal').classList.add('open');
+  const btn = document.getElementById('cpb');
+  btn.textContent = ' Copiar prompt';
+  btn.className = 'cpb';
+}
+
+function openDoubt(id) {
+  document.getElementById('mdp').textContent = prompts[id] || prompts['ex'];
+  document.getElementById('modal').classList.add('open');
+  const btn = document.getElementById('cpb');
+  btn.textContent = ' Copiar prompt';
+  btn.className = 'cpb';
+}
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal'))
+    document.getElementById('modal').classList.remove('open');
+}
+function copyPrompt() {
+  navigator.clipboard.writeText(document.getElementById('mdp').textContent).then(() => {
+    const btn = document.getElementById('cpb');
+    btn.textContent = '✓ Copiado!';
+    btn.className = 'cpb copied';
+    setTimeout(() => { btn.textContent=' Copiar prompt'; btn.className='cpb'; }, 2500);
+  });
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
+updProg();
+updScore();
+</script>
+</body>
+</html>
